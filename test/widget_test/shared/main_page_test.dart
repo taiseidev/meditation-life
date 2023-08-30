@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
 import 'package:meditation_life/shared/main_page.dart';
 
 void main() {
@@ -20,7 +21,7 @@ void main() {
     await tester.pump();
 
     // Verify if the page changes to MeditationView when the FloatingActionButton is tapped.
-    expect(find.byType(MeditationView), findsOneWidget);
+    expect(find.byType(MeditationPage), findsOneWidget);
 
     // Tap the AnimatedBottomNavigationBar.
     await tester.tap(find.byIcon(Icons.add).first);

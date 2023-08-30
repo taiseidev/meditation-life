@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
 
 class MainPage extends HookWidget {
   const MainPage({super.key});
@@ -14,7 +15,7 @@ class MainPage extends HookWidget {
     final pages = <Widget>[
       const MeditationHistoryView(),
       const SettingView(),
-      const MeditationView(),
+      const MeditationPage(),
     ];
 
     return Scaffold(
@@ -48,17 +49,6 @@ class SettingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text("設定画面"),
-    );
-  }
-}
-
-class MeditationView extends StatelessWidget {
-  const MeditationView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("瞑想画面"),
     );
   }
 }

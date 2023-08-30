@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_notifier.dart';
@@ -19,7 +20,10 @@ class MeditationPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final meditation = meditations[index];
               return ListTile(
-                leading: Image.network(meditation.thumbnailUrl),
+                leading: CachedNetworkImage(
+                  imageUrl: meditation.thumbnailUrl,
+                  width: 100,
+                ),
                 title: Text(meditation.title),
                 subtitle: Text('${meditation.duration} minutes'),
                 onTap: () {},

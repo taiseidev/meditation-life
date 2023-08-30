@@ -50,3 +50,6 @@ linux
 macos
 web
 windows
+
+# fvm
+.fvm/flutter_sdk

@@ -1,17 +1,26 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends HookWidget {
   const MainPage({super.key});
+
+  static const meditationViewIndex = 2;
 
   @override
   Widget build(BuildContext context) {
+    final selectedIndex = useState<int>(0);
+
+    final views = <Widget>[
+      const MeditationHistoryView(),
+      const SettingView(),
+      const MeditationView(),
+    ];
+
     return Scaffold(
-      body: const Center(
-        child: Text("こんにちは"),
-      ),
+      body: views[selectedIndex.value],
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => selectedIndex.value = meditationViewIndex,
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
@@ -20,12 +29,12 @@ class MainPage extends StatelessWidget {
       bottomNavigationBar: AnimatedBottomNavigationBar(
         backgroundColor: Colors.red,
         icons: const [Icons.add, Icons.add],
-        activeIndex: 0,
+        activeIndex: selectedIndex.value,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
-        onTap: (index) {},
+        onTap: (index) => selectedIndex.value = index,
         //other params
       ),
     );

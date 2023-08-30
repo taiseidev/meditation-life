@@ -1,159 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:meditation_life/features/meditation/domain/meditation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/features/meditation/presentation/meditation_notifier.dart';
 
-class MeditationPage extends StatelessWidget {
+class MeditationPage extends ConsumerWidget {
   const MeditationPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(meditationNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('瞑想一覧'),
       ),
-      body: ListView.builder(
-        itemCount: meditations.length,
-        itemBuilder: (context, index) {
-          final meditation = meditations[index];
-          return ListTile(
-            leading: Image.network(meditation.thumbnailUrl),
-            title: Text(meditation.title),
-            subtitle: Text('${meditation.duration} minutes'),
-            onTap: () {},
+      body: data.when(
+        data: (meditations) {
+          return ListView.builder(
+            itemCount: meditations.length,
+            itemBuilder: (context, index) {
+              final meditation = meditations[index];
+              return ListTile(
+                leading: Image.network(meditation.thumbnailUrl),
+                title: Text(meditation.title),
+                subtitle: Text('${meditation.duration} minutes'),
+                onTap: () {},
+              );
+            },
           );
         },
+        error: (error, stackTrace) => const Center(
+          child: Text("エラーが発生しました"),
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
 }
-
-// ダミーデータ
-final meditations = [
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-  Meditation(
-    id: "id",
-    title: "titleLarge",
-    duration: 30,
-    thumbnailUrl:
-        "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-    audioUrl: "audioUrl",
-  ),
-];

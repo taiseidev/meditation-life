@@ -38,6 +38,10 @@ dependencies:
   hooks_riverpod: ^2.3.10
   flutter_hooks: ^0.20.1
 
+  # Firebase
+  firebase_core: ^2.15.1
+  cloud_firestore: ^4.9.1
+
   cupertino_icons: ^1.0.2
   device_preview: ^1.1.0
 

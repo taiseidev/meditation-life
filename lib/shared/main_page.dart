@@ -11,14 +11,14 @@ class MainPage extends HookWidget {
   Widget build(BuildContext context) {
     final selectedIndex = useState<int>(0);
 
-    final views = <Widget>[
+    final pages = <Widget>[
       const MeditationHistoryView(),
       const SettingView(),
       const MeditationView(),
     ];
 
     return Scaffold(
-      body: views[selectedIndex.value],
+      body: pages[selectedIndex.value],
       floatingActionButton: FloatingActionButton(
         onPressed: () => selectedIndex.value = meditationViewIndex,
         backgroundColor: Colors.blue,

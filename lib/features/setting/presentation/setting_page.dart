@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
 import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
+
+  Future<void> _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +42,19 @@ class SettingPage extends StatelessWidget {
             ),
             _SettingsTile(
               title: '利用規約',
-              callback: () {},
+              callback: () => _launchUrl(
+                "https://ionian-earthworm-71d.notion.site/4b44e3fb3e5a4133875b18cab6e75e07?pvs=4",
+              ),
             ),
             _SettingsTile(
               title: 'プライバシーポリシー',
-              callback: () {},
+              callback: () => _launchUrl(
+                "https://ionian-earthworm-71d.notion.site/67d9545c307748fc8e0bdd67ed852900?pvs=4",
+              ),
             ),
             _SettingsTile(
               title: 'お問い合わせ',
-              callback: () {},
+              callback: () => _launchUrl("https://forms.gle/zbWgULaGxh46jfyF7"),
             ),
             _SettingsTile(
               title: 'アプリケーション情報',

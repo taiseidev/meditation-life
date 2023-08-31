@@ -30,7 +30,7 @@ class MainPage extends HookWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         backgroundColor: Colors.red,
-        icons: const [Icons.add, Icons.add],
+        icons: const [Icons.history_rounded, Icons.settings],
         activeIndex: selectedIndex.value,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,

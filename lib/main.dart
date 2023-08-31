@@ -8,6 +8,8 @@ import 'package:meditation_life/app.dart';
 import 'package:meditation_life/features/meditation/domain/repository/meditation_repository.dart';
 import 'package:meditation_life/features/meditation/infrastructure/repository/firebase_meditation_repository.dart';
 import 'package:meditation_life/firebase_options.dart';
+import 'package:meditation_life/shared/package_info_util.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 final meditationRepositoryProvider = Provider<MeditationRepository>(
   (ref) => throw UnimplementedError(),
@@ -18,11 +20,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  final packageInfo = await PackageInfo.fromPlatform();
   runApp(
     ProviderScope(
       overrides: [
         meditationRepositoryProvider.overrideWith(
             (ref) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
+        packageInfoProvider.overrideWithValue(packageInfo),
       ],
       child: DevicePreview(
         enabled: !kReleaseMode,

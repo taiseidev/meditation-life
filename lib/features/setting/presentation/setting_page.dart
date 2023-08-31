@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
 import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
+import 'package:meditation_life/shared/package_info_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
@@ -56,9 +58,14 @@ class SettingPage extends StatelessWidget {
               title: 'お問い合わせ',
               callback: () => _launchUrl("https://forms.gle/zbWgULaGxh46jfyF7"),
             ),
-            _SettingsTile(
-              title: 'アプリケーション情報',
-              callback: () {},
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Align(
+                child: Consumer(
+                  builder: (context, ref, child) =>
+                      Text("ver ${ref.read(packageInfoUtilProvider).version}"),
+                ),
+              ),
             ),
           ],
         ),

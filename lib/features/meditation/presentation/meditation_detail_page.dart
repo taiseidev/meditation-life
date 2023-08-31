@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
+import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
 
 class MeditationDetailView extends StatelessWidget {
   final Meditation meditation;
@@ -48,9 +49,11 @@ class MeditationDetailView extends StatelessWidget {
               style: const TextStyle(fontSize: 18),
             ),
             ElevatedButton(
-              onPressed: () {
-                // TODO: 瞑想開始画面へ遷移
-              },
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MeditationPlayScreen(meditation)),
+              ),
               child: const Text("瞑想を開始する"),
             ),
           ],

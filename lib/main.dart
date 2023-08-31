@@ -22,6 +22,7 @@ Future<void> main() async {
   );
 
   final packageInfo = await PackageInfo.fromPlatform();
+
   runApp(
     ProviderScope(
       overrides: [

@@ -18,11 +18,17 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('設定'),
-        backgroundColor: Colors.deepPurple,
+        title: const Text(
+          '設定',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: Scaffold(
-        body: ListView(
+        body: Column(
           children: [
             _SettingsTile(
               title: '通知設定',
@@ -62,8 +68,12 @@ class SettingPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 24),
               child: Align(
                 child: Consumer(
-                  builder: (context, ref, child) =>
-                      Text("ver ${ref.read(packageInfoUtilProvider).version}"),
+                  builder: (context, ref, child) => Text(
+                    "ver ${ref.read(packageInfoUtilProvider).version}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -93,15 +103,19 @@ class _SettingsTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 10,
+        ),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         trailing: const Icon(
           Icons.chevron_right,
-          color: Colors.grey,
         ),
         onTap: callback,
       ),

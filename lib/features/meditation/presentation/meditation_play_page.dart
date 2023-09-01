@@ -120,6 +120,9 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                             isDragging = false;
                             player.seek(Duration(seconds: value.toInt()));
                           },
+                          activeColor: const Color(0xff00a497),
+                          thumbColor: const Color(0xff00a497),
+                          secondaryActiveColor: const Color(0xff00a497),
                           onChanged: (value) {
                             setState(() {
                               isDragging = true;

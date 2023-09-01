@@ -13,18 +13,32 @@ class MeditationDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(meditation.title),
-        backgroundColor: Colors.deepPurple,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        title: Text(
+          meditation.title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Hero(
-                tag: meditation.id,
+            Hero(
+              tag: meditation.id,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
                 child: CachedNetworkImage(
                   imageUrl: meditation.thumbnailUrl,
                   fit: BoxFit.cover,
@@ -32,30 +46,28 @@ class MeditationDetailView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Duration',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              '${meditation.duration} minutes',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Audio',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              meditation.audioUrl,
-              style: const TextStyle(fontSize: 18),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.push(
+            InkWell(
+              onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => MeditationPlayScreen(meditation)),
               ),
-              child: const Text(Strings.meditationStartButtonLabel),
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: const Color(0xff00a497),
+                    borderRadius: BorderRadius.circular(20)),
+                child: const Text(
+                  Strings.meditationStartButtonLabel,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

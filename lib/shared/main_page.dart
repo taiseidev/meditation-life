@@ -26,14 +26,19 @@ class MainPage extends ConsumerWidget {
         onPressed: () => ref
             .read(selectedIndexProvider.notifier)
             .update((state) => state = meditationViewIndex),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color(0xff00a497).withOpacity(0.6),
         shape: const CircleBorder(),
-        child: const Icon(Icons.add),
+        child: Image.asset(
+          "assets/icons/meditation_icon.png",
+          width: 20,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
-        backgroundColor: Colors.red,
-        icons: const [Icons.history_rounded, Icons.settings],
+        backgroundColor: Colors.black,
+        activeColor: Colors.white,
+        inactiveColor: Colors.white.withOpacity(0.6),
+        icons: const [Icons.home, Icons.settings],
         activeIndex: ref.watch(selectedIndexProvider),
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,

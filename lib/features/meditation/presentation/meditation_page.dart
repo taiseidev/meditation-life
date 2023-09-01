@@ -12,7 +12,11 @@ class MeditationPage extends ConsumerWidget {
     final data = ref.watch(meditationNotifierProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('瞑想一覧'),
+        title: const Text(
+          '瞑想一覧',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: data.when(
         data: (meditations) {
@@ -21,18 +25,30 @@ class MeditationPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final meditation = meditations[index];
               return ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Hero(
-                    tag: meditation.id,
+                leading: Hero(
+                  tag: meditation.id,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: meditation.thumbnailUrl,
-                      width: 100,
                     ),
                   ),
                 ),
-                title: Text(meditation.title),
-                subtitle: Text('${meditation.duration} minutes'),
+                title: Text(
+                  meditation.title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  '時間：${formatTime(meditation.duration)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -49,5 +65,11 @@ class MeditationPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
+  }
+
+  String formatTime(int seconds) {
+    int minutes = (seconds / 60).floor();
+    int remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 }

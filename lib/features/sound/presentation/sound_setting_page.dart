@@ -15,8 +15,22 @@ class SoundSettingPageState extends State<SoundSettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('サウンド設定'),
-        backgroundColor: Colors.deepPurple,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        title: const Text(
+          'サウンド設定',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: ListView(
         children: [
@@ -37,7 +51,7 @@ class SoundSettingPageState extends State<SoundSettingPage> {
                       _volume = value;
                     });
                   },
-                  activeColor: Colors.deepPurple,
+                  activeColor: const Color(0xff00a497),
                 )
               ],
             ),
@@ -83,12 +97,15 @@ class _SettingsSwitchTile extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: Colors.deepPurple,
+          activeColor: const Color(0xff00a497),
         ),
       ),
     );

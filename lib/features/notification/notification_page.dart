@@ -9,17 +9,31 @@ class NotificationPage extends StatefulWidget {
 
 class NotificationPageState extends State<NotificationPage> {
   bool _pushNotifications = true;
-  bool _emailNotifications = true;
-  bool _inAppNotifications = true;
+  final bool _emailNotifications = true;
+  final bool _inAppNotifications = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('通知設定'),
-        backgroundColor: Colors.deepPurple,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        title: const Text(
+          '通知設定',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.black,
       ),
-      body: ListView(
+      body: Column(
         children: [
           _SettingsSwitchTile(
             title: 'プッシュ通知',
@@ -27,24 +41,6 @@ class NotificationPageState extends State<NotificationPage> {
             onChanged: (value) {
               setState(() {
                 _pushNotifications = value;
-              });
-            },
-          ),
-          _SettingsSwitchTile(
-            title: 'メール通知',
-            value: _emailNotifications,
-            onChanged: (value) {
-              setState(() {
-                _emailNotifications = value;
-              });
-            },
-          ),
-          _SettingsSwitchTile(
-            title: 'アプリ内通知',
-            value: _inAppNotifications,
-            onChanged: (value) {
-              setState(() {
-                _inAppNotifications = value;
               });
             },
           ),
@@ -80,12 +76,15 @@ class _SettingsSwitchTile extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: Colors.deepPurple,
+          activeColor: const Color(0xff00a497),
         ),
       ),
     );

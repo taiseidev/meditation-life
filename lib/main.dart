@@ -28,7 +28,7 @@ Future<void> main() async {
   final container = ProviderContainer(
     overrides: [
       meditationRepositoryProvider.overrideWith(
-          (ref) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
+          (_) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
       packageInfoProvider.overrideWithValue(packageInfo),
     ],
   );

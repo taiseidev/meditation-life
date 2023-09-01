@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
-import 'package:meditation_life/shared/widgets/modal/meditation_completed_modal.dart';
+import 'package:meditation_life/features/meditation/presentation/meditation_completed_modal.dart';
 
 class MeditationPlayScreen extends StatefulWidget {
   const MeditationPlayScreen(this.meditation, {super.key});
@@ -38,7 +38,9 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return const MeditationCompletedModal();
+                return MeditationCompletedModal(
+                  meditationId: widget.meditation.id,
+                );
               },
             );
           }

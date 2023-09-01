@@ -1,18 +1,18 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
 import 'package:meditation_life/features/setting/presentation/setting_page.dart';
 
-class MainPage extends HookWidget {
+final selectedIndexProvider = StateProvider.autoDispose<int>((_) => 0);
+
+class MainPage extends ConsumerWidget {
   const MainPage({super.key});
 
   static const meditationViewIndex = 2;
 
   @override
-  Widget build(BuildContext context) {
-    final selectedIndex = useState<int>(0);
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final pages = <Widget>[
       const MeditationHistoryView(),
       const SettingPage(),
@@ -20,9 +20,11 @@ class MainPage extends HookWidget {
     ];
 
     return Scaffold(
-      body: pages[selectedIndex.value],
+      body: pages[ref.watch(selectedIndexProvider)],
       floatingActionButton: FloatingActionButton(
-        onPressed: () => selectedIndex.value = meditationViewIndex,
+        onPressed: () => ref
+            .read(selectedIndexProvider.notifier)
+            .update((state) => state = meditationViewIndex),
         backgroundColor: Colors.blue,
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
@@ -31,12 +33,14 @@ class MainPage extends HookWidget {
       bottomNavigationBar: AnimatedBottomNavigationBar(
         backgroundColor: Colors.red,
         icons: const [Icons.history_rounded, Icons.settings],
-        activeIndex: selectedIndex.value,
+        activeIndex: ref.watch(selectedIndexProvider),
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
-        onTap: (index) => selectedIndex.value = index,
+        onTap: (index) => ref
+            .read(selectedIndexProvider.notifier)
+            .update((state) => state = index),
         //other params
       ),
     );

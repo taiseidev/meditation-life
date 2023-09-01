@@ -1,9 +1,17 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/features/meditation/domain/usecase/meditation_usecase.dart';
+import 'package:meditation_life/shared/main_page.dart';
 
 class MeditationCompletedModal extends StatelessWidget {
-  const MeditationCompletedModal({super.key});
+  const MeditationCompletedModal({
+    super.key,
+    required this.meditationId,
+  });
+
+  final String meditationId;
 
   static const encouragementMessages = [
     "よくやった！また明日も頑張ろう！",
@@ -49,11 +57,25 @@ class MeditationCompletedModal extends StatelessWidget {
       title: const Text('今日もお疲れ様でした！'),
       content: Text(outputRandomMessage()),
       actions: <Widget>[
-        ElevatedButton(
-          // 本日の瞑想データを保存して、履歴画面に遷移する。
-          onPressed: () => Navigator.pop(context),
-          child: const Text("終了"),
-        ),
+        Consumer(
+          builder: (context, ref, child) {
+            return ElevatedButton(
+              // 本日の瞑想データを保存して、履歴画面に遷移する。
+              onPressed: () async {
+                await ref
+                    .read(meditationUsecaseProvider)
+                    .addMeditation(meditationId);
+                if (context.mounted) {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  ref
+                      .read(selectedIndexProvider.notifier)
+                      .update((state) => state = 0);
+                }
+              },
+              child: const Text("終了"),
+            );
+          },
+        )
       ],
     );
   }

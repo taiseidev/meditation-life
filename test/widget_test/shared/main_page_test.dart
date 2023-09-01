@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
+import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/shared/main_page.dart';
 
 void main() {
@@ -28,6 +29,6 @@ void main() {
     await tester.pump();
 
     // Verify if the page changes to MeditationHistoryView when the AnimatedBottomNavigationBar is tapped.
-    expect(find.byType(MeditationHistoryView), findsOneWidget);
+    expect(find.byType(MeditationHistoryPage), findsOneWidget);
   });
 }

@@ -33,6 +33,7 @@ dependencies:
 
   # UI
   animated_bottom_navigation_bar: ^1.2.0
+  table_calendar: ^3.0.9
 
   # State
   hooks_riverpod: ^2.3.10

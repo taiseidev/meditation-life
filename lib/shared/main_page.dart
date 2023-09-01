@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
+import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/features/setting/presentation/setting_page.dart';
 
 final selectedIndexProvider = StateProvider.autoDispose<int>((_) => 0);
@@ -14,7 +15,7 @@ class MainPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pages = <Widget>[
-      const MeditationHistoryView(),
+      const MeditationHistoryPage(),
       const SettingPage(),
       const MeditationPage(),
     ];
@@ -43,17 +44,6 @@ class MainPage extends ConsumerWidget {
             .update((state) => state = index),
         //other params
       ),
-    );
-  }
-}
-
-class MeditationHistoryView extends StatelessWidget {
-  const MeditationHistoryView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("瞑想履歴画面"),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
+import 'package:meditation_life/shared/strings.dart';
 
 class MeditationDetailView extends StatelessWidget {
   final Meditation meditation;
@@ -54,7 +55,7 @@ class MeditationDetailView extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) => MeditationPlayScreen(meditation)),
               ),
-              child: const Text("瞑想を開始する"),
+              child: const Text(Strings.meditationStartButtonLabel),
             ),
           ],
         ),

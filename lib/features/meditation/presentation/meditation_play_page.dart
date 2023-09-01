@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
+import 'package:meditation_life/shared/widgets/modal/meditation_completed_modal.dart';
 
 class MeditationPlayScreen extends StatefulWidget {
   const MeditationPlayScreen(this.meditation, {super.key});
@@ -16,6 +17,7 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
   bool isPlaying = false;
   double volume = 0.5;
   double sliderValue = 0.0;
+  bool isDragging = false;
 
   final player = AudioPlayer();
 
@@ -26,6 +28,23 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
     Future(() async {
       await player.setUrl(widget.meditation.audioUrl);
     });
+
+    player.playerStateStream.listen(
+      (state) async {
+        if (state.processingState == ProcessingState.completed) {
+          await player.stop();
+          if (context.mounted) {
+            await showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return const MeditationCompletedModal();
+              },
+            );
+          }
+        }
+      },
+    );
   }
 
   @override
@@ -88,19 +107,25 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                     const SizedBox(height: 20),
                     StreamBuilder<Duration>(
                       stream: player.positionStream,
-                      builder: (context, _) => Slider(
-                        value: sliderValue,
-                        min: 0,
-                        max: widget.meditation.duration.toDouble(),
-                        onChangeEnd: (value) {
-                          player.seek(Duration(seconds: value.toInt()));
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            sliderValue = value;
-                          });
-                        },
-                      ),
+                      builder: (context, snapshot) {
+                        final position =
+                            snapshot.data?.inSeconds.toDouble() ?? 0.0;
+                        return Slider(
+                          value: isDragging ? sliderValue : position,
+                          min: 0,
+                          max: widget.meditation.duration.toDouble(),
+                          onChangeEnd: (value) {
+                            isDragging = false;
+                            player.seek(Duration(seconds: value.toInt()));
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              isDragging = true;
+                              sliderValue = value;
+                            });
+                          },
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     Row(

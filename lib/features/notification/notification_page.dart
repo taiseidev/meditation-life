@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/utils/vibration_util.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -35,15 +37,22 @@ class NotificationPageState extends State<NotificationPage> {
       ),
       body: Column(
         children: [
-          _SettingsSwitchTile(
-            title: 'プッシュ通知',
-            value: _pushNotifications,
-            onChanged: (value) {
-              setState(() {
-                _pushNotifications = value;
-              });
+          Consumer(
+            builder: (context, ref, child) {
+              return _SettingsSwitchTile(
+                title: 'プッシュ通知',
+                value: _pushNotifications,
+                onChanged: (value) {
+                  ref
+                      .read(vibrationProvider)
+                      .impact(HapticFeedbackType.mediumImpact);
+                  setState(() {
+                    _pushNotifications = value;
+                  });
+                },
+              );
             },
-          ),
+          )
         ],
       ),
     );

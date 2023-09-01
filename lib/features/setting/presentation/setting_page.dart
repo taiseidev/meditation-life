@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
 import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
 import 'package:meditation_life/shared/package_info_util.dart';
+import 'package:meditation_life/utils/vibration_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
@@ -84,7 +85,7 @@ class SettingPage extends StatelessWidget {
   }
 }
 
-class _SettingsTile extends StatelessWidget {
+class _SettingsTile extends ConsumerWidget {
   const _SettingsTile({
     required this.title,
     required this.callback,
@@ -93,7 +94,7 @@ class _SettingsTile extends StatelessWidget {
   final VoidCallback callback;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -117,7 +118,10 @@ class _SettingsTile extends StatelessWidget {
         trailing: const Icon(
           Icons.chevron_right,
         ),
-        onTap: callback,
+        onTap: () {
+          ref.read(vibrationProvider).impact(HapticFeedbackType.lightImpact);
+          callback();
+        },
       ),
     );
   }

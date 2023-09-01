@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/utils/vibration_util.dart';
 
 class SoundSettingPage extends StatefulWidget {
   const SoundSettingPage({super.key});
@@ -9,7 +11,7 @@ class SoundSettingPage extends StatefulWidget {
 
 class SoundSettingPageState extends State<SoundSettingPage> {
   double _volume = 0.5;
-  bool _vibration = true;
+  final bool _vibration = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +43,45 @@ class SoundSettingPageState extends State<SoundSettingPage> {
               children: [
                 const Text(
                   '音量',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Spacer(),
-                Slider(
-                  value: _volume,
-                  onChanged: (value) {
-                    setState(() {
-                      _volume = value;
-                    });
+                Consumer(
+                  builder: (context, ref, child) {
+                    return Slider(
+                      value: _volume,
+                      onChanged: (value) {
+                        ref
+                            .read(vibrationProvider)
+                            .impact(HapticFeedbackType.lightImpact);
+                        setState(() {
+                          _volume = value;
+                        });
+                      },
+                      activeColor: const Color(0xff00a497),
+                    );
                   },
-                  activeColor: const Color(0xff00a497),
-                )
+                ),
               ],
             ),
           ),
-          _SettingsSwitchTile(
-            title: 'バイブレーション',
-            value: _vibration,
-            onChanged: (value) {
-              setState(() {
-                _vibration = value;
-              });
+          Consumer(
+            builder: (context, ref, child) {
+              return _SettingsSwitchTile(
+                title: 'バイブレーション',
+                value: ref.watch(vibrationEnabledProvider),
+                onChanged: (value) {
+                  ref
+                      .read(vibrationProvider)
+                      .impact(HapticFeedbackType.mediumImpact);
+                  ref
+                      .read(vibrationEnabledProvider.notifier)
+                      .update((state) => state = value);
+                },
+              );
             },
           ),
         ],

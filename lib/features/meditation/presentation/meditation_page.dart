@@ -31,6 +31,7 @@ class MeditationPage extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: meditation.thumbnailUrl,
+                      width: 100,
                     ),
                   ),
                 ),

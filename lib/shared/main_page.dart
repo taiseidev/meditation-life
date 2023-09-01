@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/features/setting/presentation/setting_page.dart';
+import 'package:meditation_life/utils/vibration_util.dart';
 
 final selectedIndexProvider = StateProvider.autoDispose<int>((_) => 0);
 
@@ -23,9 +24,12 @@ class MainPage extends ConsumerWidget {
     return Scaffold(
       body: pages[ref.watch(selectedIndexProvider)],
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref
-            .read(selectedIndexProvider.notifier)
-            .update((state) => state = meditationViewIndex),
+        onPressed: () {
+          ref.read(vibrationProvider).impact(HapticFeedbackType.mediumImpact);
+          ref
+              .read(selectedIndexProvider.notifier)
+              .update((state) => state = meditationViewIndex);
+        },
         backgroundColor: const Color(0xff00a497).withOpacity(0.6),
         shape: const CircleBorder(),
         child: Image.asset(
@@ -44,9 +48,12 @@ class MainPage extends ConsumerWidget {
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
-        onTap: (index) => ref
-            .read(selectedIndexProvider.notifier)
-            .update((state) => state = index),
+        onTap: (index) {
+          ref.read(vibrationProvider).impact(HapticFeedbackType.mediumImpact);
+          ref
+              .read(selectedIndexProvider.notifier)
+              .update((state) => state = index);
+        },
         //other params
       ),
     );

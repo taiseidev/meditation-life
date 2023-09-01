@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 
 class MeditationPlayScreen extends StatefulWidget {
@@ -8,12 +9,24 @@ class MeditationPlayScreen extends StatefulWidget {
   final Meditation meditation;
 
   @override
-  _MeditationPlayScreenState createState() => _MeditationPlayScreenState();
+  MeditationPlayScreenState createState() => MeditationPlayScreenState();
 }
 
-class _MeditationPlayScreenState extends State<MeditationPlayScreen> {
+class MeditationPlayScreenState extends State<MeditationPlayScreen> {
   bool isPlaying = false;
   double volume = 0.5;
+  double sliderValue = 0.0;
+
+  final player = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future(() async {
+      await player.setUrl(widget.meditation.audioUrl);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +34,21 @@ class _MeditationPlayScreenState extends State<MeditationPlayScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: CachedNetworkImage(
-              imageUrl: widget.meditation.thumbnailUrl,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: widget.meditation.id,
+              child: CachedNetworkImage(
+                imageUrl: widget.meditation.thumbnailUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SafeArea(
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
             ),
           ),
           Padding(
@@ -34,25 +59,11 @@ class _MeditationPlayScreenState extends State<MeditationPlayScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Meditation Title',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
+                    Text(
+                      widget.meditation.title,
+                      style: const TextStyle(fontSize: 24, color: Colors.white),
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Meditation Description',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    Slider(
-                      value: volume,
-                      onChanged: (value) {
-                        setState(() {
-                          volume = value;
-                        });
-                      },
-                    ),
+                    const SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -61,32 +72,53 @@ class _MeditationPlayScreenState extends State<MeditationPlayScreen> {
                               Icon(isPlaying ? Icons.pause : Icons.play_arrow),
                           color: Colors.white,
                           iconSize: 64,
-                          onPressed: () {
+                          onPressed: () async {
                             setState(() {
                               isPlaying = !isPlaying;
                             });
+                            if (isPlaying) {
+                              await player.play();
+                            } else {
+                              await player.stop();
+                            }
                           },
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    LinearProgressIndicator(
-                      value: 0.5,
-                      backgroundColor: Colors.white.withOpacity(0.3),
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.white),
+                    StreamBuilder<Duration>(
+                      stream: player.positionStream,
+                      builder: (context, _) => Slider(
+                        value: sliderValue,
+                        min: 0,
+                        max: widget.meditation.duration.toDouble(),
+                        onChangeEnd: (value) {
+                          player.seek(Duration(seconds: value.toInt()));
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            sliderValue = value;
+                          });
+                        },
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '10:00',
-                          style: TextStyle(color: Colors.white),
+                        StreamBuilder<Duration>(
+                          stream: player.positionStream,
+                          builder: (context, snapshot) {
+                            final position = snapshot.data ?? Duration.zero;
+                            return Text(
+                              formatTime(position.inSeconds),
+                              style: const TextStyle(color: Colors.white),
+                            );
+                          },
                         ),
                         Text(
-                          '20:00',
-                          style: TextStyle(color: Colors.white),
+                          formatTime(widget.meditation.duration),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
@@ -94,9 +126,21 @@ class _MeditationPlayScreenState extends State<MeditationPlayScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  String formatTime(int seconds) {
+    int minutes = (seconds / 60).floor();
+    int remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 }

@@ -28,6 +28,8 @@
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>... explain why the app uses the microphone here ...</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>sms</string>

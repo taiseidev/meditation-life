@@ -3,16 +3,23 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:meditation_life/app.dart';
 import 'package:meditation_life/features/auth/infrastructure/auth_repository.dart';
 import 'package:meditation_life/features/auth/infrastructure/user_repository.dart';
 import 'package:meditation_life/features/meditation/domain/repository/meditation_repository.dart';
 import 'package:meditation_life/features/meditation/infrastructure/repository/firebase_meditation_repository.dart';
+import 'package:meditation_life/features/meditation_history/domain/repository/meditation_history_repository.dart';
+import 'package:meditation_life/features/meditation_history/infrastructure/repository/firebase_meditation_history_repository.dart';
 import 'package:meditation_life/firebase_options.dart';
 import 'package:meditation_life/shared/package_info_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 final meditationRepositoryProvider = Provider<MeditationRepository>(
+  (ref) => throw UnimplementedError(),
+);
+final meditationHistoryRepositoryProvider =
+    Provider<MeditationHistoryRepository>(
   (ref) => throw UnimplementedError(),
 );
 
@@ -22,12 +29,16 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  initializeDateFormatting();
+
   final packageInfo = await PackageInfo.fromPlatform();
 
   final container = ProviderContainer(
     overrides: [
       meditationRepositoryProvider.overrideWith(
           (_) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
+      meditationHistoryRepositoryProvider.overrideWith((_) =>
+          FirebaseMeditationHistoryRepository(FirebaseFirestore.instance)),
       packageInfoProvider.overrideWithValue(packageInfo),
     ],
   );

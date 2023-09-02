@@ -11,7 +11,6 @@ class SoundSettingPage extends StatefulWidget {
 
 class SoundSettingPageState extends State<SoundSettingPage> {
   double _volume = 0.5;
-  final bool _vibration = true;
 
   @override
   Widget build(BuildContext context) {

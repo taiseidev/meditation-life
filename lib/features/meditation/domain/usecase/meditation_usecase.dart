@@ -11,10 +11,6 @@ class MeditationUsecase {
   MeditationUsecase(this._meditationRepository);
   final MeditationRepository _meditationRepository;
 
-  Future<void> addMeditation(String meditationId) async {
-    await _meditationRepository.addMeditation(meditationId);
-  }
-
   Stream<List<Meditation>> fetchMeditationsStream() =>
       _meditationRepository.fetchMeditationsStream();
 }

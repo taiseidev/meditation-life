@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:meditation_life/features/meditation/domain/usecase/meditation_usecase.dart';
+import 'package:meditation_life/features/meditation_history/domain/usecase/meditation_history_usecase.dart';
 import 'package:meditation_life/shared/main_page.dart';
 
 class MeditationCompletedModal extends StatelessWidget {
@@ -54,17 +54,35 @@ class MeditationCompletedModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('今日もお疲れ様でした！'),
-      content: Text(outputRandomMessage()),
+      backgroundColor: const Color(0xff00a497),
+      surfaceTintColor: Colors.transparent,
+      title: const Text(
+        '今日もお疲れ様でした！',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      content: Text(
+        outputRandomMessage(),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       actions: <Widget>[
         Consumer(
           builder: (context, ref, child) {
-            return ElevatedButton(
-              // 本日の瞑想データを保存して、履歴画面に遷移する。
+            return TextButton(
               onPressed: () async {
                 await ref
-                    .read(meditationUsecaseProvider)
-                    .addMeditation(meditationId);
+                    .read(meditationHistoryUsecaseProvider)
+                    .addMeditationHistory(
+                      meditationId,
+                      DateTime.now(),
+                    );
                 if (context.mounted) {
                   Navigator.popUntil(context, (route) => route.isFirst);
                   ref
@@ -72,7 +90,14 @@ class MeditationCompletedModal extends StatelessWidget {
                       .update((state) => state = 0);
                 }
               },
-              child: const Text("終了"),
+              child: const Text(
+                "閉じる",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             );
           },
         )

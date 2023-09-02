@@ -14,7 +14,7 @@ class MeditationPlayScreen extends StatefulWidget {
 }
 
 class MeditationPlayScreenState extends State<MeditationPlayScreen> {
-  bool isPlaying = false;
+  bool isPlaying = true;
   double volume = 0.5;
   double sliderValue = 0.0;
   bool isDragging = false;
@@ -27,6 +27,7 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
 
     Future(() async {
       await player.setUrl(widget.meditation.audioUrl);
+      await player.play();
     });
 
     player.playerStateStream.listen(

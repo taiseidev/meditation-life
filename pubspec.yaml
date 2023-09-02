@@ -44,11 +44,14 @@ dependencies:
   cloud_firestore: ^4.9.1
   firebase_auth: ^4.9.0
 
+  # DB
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+
   # Other
   cached_network_image: ^3.2.3
   url_launcher: ^6.1.13
   package_info_plus: ^4.1.0
-
 
   # Audio
   just_audio: ^0.9.34
@@ -67,6 +70,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  isar_generator: ^3.1.0+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

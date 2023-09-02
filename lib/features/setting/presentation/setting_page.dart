@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
 import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
-import 'package:meditation_life/shared/package_info_util.dart';
+import 'package:meditation_life/utils/package_info_util.dart';
 import 'package:meditation_life/utils/vibration_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 

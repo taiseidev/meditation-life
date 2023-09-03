@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/utils/vibration_util.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -93,7 +94,7 @@ class _SettingsSwitchTile extends StatelessWidget {
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: const Color(0xff00a497),
+          activeColor: AppColor.secondary,
         ),
       ),
     );

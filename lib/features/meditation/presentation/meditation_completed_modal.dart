@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation_history/domain/usecase/meditation_history_usecase.dart';
 import 'package:meditation_life/shared/main_page.dart';
+import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationCompletedModal extends StatelessWidget {
   const MeditationCompletedModal({
@@ -54,7 +55,7 @@ class MeditationCompletedModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xff00a497),
+      backgroundColor: AppColor.secondary,
       surfaceTintColor: Colors.transparent,
       title: const Text(
         '今日もお疲れ様でした！',

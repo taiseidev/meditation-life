@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
+import 'package:meditation_life/shared/res/color.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MeditationHistoryPage extends ConsumerWidget {
@@ -59,7 +60,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                     Text(
                       "${histories.month} ",
                       style: const TextStyle(
-                        color: Color(0xff00a497),
+                        color: AppColor.secondary,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -75,7 +76,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                     Text(
                       "${histories.events.length} ",
                       style: const TextStyle(
-                        color: Color(0xff00a497),
+                        color: AppColor.secondary,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -104,7 +105,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                 child: TableCalendar(
                   calendarStyle: CalendarStyle(
                     defaultDecoration: BoxDecoration(
-                      color: const Color(0xff00a497).withOpacity(0.1),
+                      color: AppColor.secondary.withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
                     defaultTextStyle: const TextStyle(
@@ -116,11 +117,11 @@ class MeditationHistoryPage extends ConsumerWidget {
                       fontWeight: FontWeight.w400,
                     ),
                     todayDecoration: const BoxDecoration(
-                      color: Color(0xff00a497),
+                      color: AppColor.secondary,
                       shape: BoxShape.circle,
                     ),
                     selectedDecoration: BoxDecoration(
-                      color: const Color(0xff00a497).withOpacity(0.6),
+                      color: AppColor.secondary.withOpacity(0.6),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -133,11 +134,11 @@ class MeditationHistoryPage extends ConsumerWidget {
                     ),
                     leftChevronIcon: Icon(
                       Icons.chevron_left,
-                      color: Color(0xff00a497),
+                      color: AppColor.secondary,
                     ),
                     rightChevronIcon: Icon(
                       Icons.chevron_right,
-                      color: Color(0xff00a497),
+                      color: AppColor.secondary,
                     ),
                   ),
                   firstDay: DateTime.utc(2010, 1, 1),

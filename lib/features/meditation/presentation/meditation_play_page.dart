@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_completed_modal.dart';
+import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationPlayScreen extends StatefulWidget {
   const MeditationPlayScreen(this.meditation, {super.key});
@@ -121,9 +122,9 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                             isDragging = false;
                             player.seek(Duration(seconds: value.toInt()));
                           },
-                          activeColor: const Color(0xff00a497),
-                          thumbColor: const Color(0xff00a497),
-                          secondaryActiveColor: const Color(0xff00a497),
+                          activeColor: AppColor.secondary,
+                          thumbColor: AppColor.secondary,
+                          secondaryActiveColor: AppColor.secondary,
                           onChanged: (value) {
                             setState(() {
                               isDragging = true;

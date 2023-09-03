@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/shared/res/color.dart';
+import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:meditation_life/utils/vibration_util.dart';
 
@@ -10,6 +12,7 @@ class SoundSettingPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final volume = useState<double>(0.0);
+
     useEffect(() {
       Future(() async {
         volume.value = ref
@@ -26,6 +29,7 @@ class SoundSettingPage extends HookConsumerWidget {
       });
       return null;
     });
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -37,7 +41,7 @@ class SoundSettingPage extends HookConsumerWidget {
           ),
         ),
         title: const Text(
-          'サウンド設定',
+          Strings.soundSettingLabel,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -53,7 +57,7 @@ class SoundSettingPage extends HookConsumerWidget {
             title: Row(
               children: [
                 const Text(
-                  '音量',
+                  Strings.volumeLabel,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -75,7 +79,7 @@ class SoundSettingPage extends HookConsumerWidget {
                             .read(sharedPreferenceUtilProvider)
                             .setDouble(SharedPreferenceKey.volume, value);
                       },
-                      activeColor: const Color(0xff00a497),
+                      activeColor: AppColor.secondary,
                     );
                   },
                 ),
@@ -84,8 +88,8 @@ class SoundSettingPage extends HookConsumerWidget {
           ),
           Consumer(
             builder: (context, ref, child) {
-              return _SettingsSwitchTile(
-                title: 'バイブレーション',
+              return _SettingSwitchTile(
+                title: Strings.vibrationLabel,
                 value: ref.watch(vibrationEnabledProvider),
                 onChanged: (value) {
                   ref
@@ -107,12 +111,12 @@ class SoundSettingPage extends HookConsumerWidget {
   }
 }
 
-class _SettingsSwitchTile extends StatelessWidget {
+class _SettingSwitchTile extends StatelessWidget {
   final String title;
   final bool value;
   final Function(bool) onChanged;
 
-  const _SettingsSwitchTile({
+  const _SettingSwitchTile({
     required this.title,
     required this.value,
     required this.onChanged,
@@ -141,7 +145,7 @@ class _SettingsSwitchTile extends StatelessWidget {
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: const Color(0xff00a497),
+          activeColor: AppColor.secondary,
         ),
       ),
     );

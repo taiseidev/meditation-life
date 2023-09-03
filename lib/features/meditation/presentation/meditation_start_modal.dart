@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
+import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationStartModal extends StatelessWidget {
   const MeditationStartModal({
@@ -14,7 +15,7 @@ class MeditationStartModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xff00a497),
+      backgroundColor: AppColor.secondary,
       surfaceTintColor: Colors.transparent,
       title: const Text(
         '瞑想を開始しますか？',

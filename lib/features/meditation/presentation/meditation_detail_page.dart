@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
+import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
 
 class MeditationDetailView extends StatelessWidget {
@@ -57,7 +58,7 @@ class MeditationDetailView extends StatelessWidget {
                 height: 50,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: const Color(0xff00a497),
+                    color: AppColor.secondary,
                     borderRadius: BorderRadius.circular(20)),
                 child: const Text(
                   Strings.meditationStartButtonLabel,

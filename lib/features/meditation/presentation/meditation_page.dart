@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_detail_page.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_notifier.dart';
+import 'package:meditation_life/shared/extension/int_extension.dart';
 
 class MeditationPage extends ConsumerWidget {
   const MeditationPage({super.key});
@@ -43,7 +44,7 @@ class MeditationPage extends ConsumerWidget {
                   ),
                 ),
                 subtitle: Text(
-                  '時間：${formatTime(meditation.duration)}',
+                  '時間：${meditation.duration.formatTime()}',
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.grey,
@@ -66,11 +67,5 @@ class MeditationPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
-  }
-
-  String formatTime(int seconds) {
-    int minutes = (seconds / 60).floor();
-    int remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 }

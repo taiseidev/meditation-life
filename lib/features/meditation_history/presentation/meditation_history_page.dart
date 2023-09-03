@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
+import 'package:meditation_life/shared/extension/int_extension.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -189,7 +190,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                     ),
                   ),
                   subtitle: Text(
-                    '時間：${formatTime(180)}',
+                    '時間：${180.formatTime()}',
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
@@ -209,11 +210,5 @@ class MeditationHistoryPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  String formatTime(int seconds) {
-    int minutes = (seconds / 60).floor();
-    int remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 }

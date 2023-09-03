@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_completed_modal.dart';
+import 'package:meditation_life/shared/extension/int_extension.dart';
 import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationPlayScreen extends StatefulWidget {
@@ -143,13 +144,13 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                           builder: (context, snapshot) {
                             final position = snapshot.data ?? Duration.zero;
                             return Text(
-                              formatTime(position.inSeconds),
+                              position.inSeconds.formatTime(),
                               style: const TextStyle(color: Colors.white),
                             );
                           },
                         ),
                         Text(
-                          formatTime(widget.meditation.duration),
+                          widget.meditation.duration.formatTime(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
@@ -162,12 +163,6 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
         ],
       ),
     );
-  }
-
-  String formatTime(int seconds) {
-    int minutes = (seconds / 60).floor();
-    int remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   @override

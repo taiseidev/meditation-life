@@ -1,19 +1,36 @@
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/shared/res/color.dart';
+import 'package:meditation_life/shared/strings.dart';
+import 'package:meditation_life/utils/shared_preference_util.dart';
 
-class NotificationPage extends StatefulWidget {
+class NotificationPage extends HookConsumerWidget {
   const NotificationPage({super.key});
 
-  @override
-  NotificationPageState createState() => NotificationPageState();
-}
-
-class NotificationPageState extends State<NotificationPage> {
-  bool _pushNotifications = true;
+  static const defaultTimeList = ["08", "00"];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isNotificationEnabled = useState<bool>(true);
+    final notificationTimeList = useState<List<String>>(defaultTimeList);
+
+    useEffect(() {
+      Future(() async {
+        isNotificationEnabled.value = ref
+                .read(sharedPreferenceUtilProvider)
+                .getBool(SharedPreferenceKey.isNotificationEnabled) ??
+            true;
+        notificationTimeList.value =
+            ref.read(sharedPreferenceUtilProvider).getStringList(
+                      SharedPreferenceKey.notificationTimeList,
+                    ) ??
+                defaultTimeList;
+      });
+      return null;
+    });
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -25,7 +42,7 @@ class NotificationPageState extends State<NotificationPage> {
           ),
         ),
         title: const Text(
-          '通知設定',
+          Strings.notificationSettingLabel,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -36,21 +53,24 @@ class NotificationPageState extends State<NotificationPage> {
       body: Column(
         children: [
           _SettingsSwitchTile(
-            title: '通知オン/オフ',
-            value: _pushNotifications,
+            title: Strings.notificationToggleLabel,
+            value: isNotificationEnabled.value,
             onChanged: (value) {
-              setState(() {
-                _pushNotifications = value;
-              });
+              isNotificationEnabled.value = value;
+              ref
+                  .read(sharedPreferenceUtilProvider)
+                  .setBool(SharedPreferenceKey.isNotificationEnabled, value);
             },
           ),
           _NotificationDateTile(
-            title: 'プッシュ通知',
-            value: _pushNotifications,
+            title: Strings.notificationTimeLabel,
+            values: notificationTimeList.value,
             onChanged: (value) {
-              setState(() {
-                _pushNotifications = value;
-              });
+              final hour = value.hour.toString();
+              final minute = value.minute.toString();
+              notificationTimeList.value = [hour, minute];
+              ref.read(sharedPreferenceUtilProvider).setStringList(
+                  SharedPreferenceKey.notificationTimeList, [hour, minute]);
             },
           )
         ],
@@ -101,15 +121,18 @@ class _SettingsSwitchTile extends StatelessWidget {
 }
 
 class _NotificationDateTile extends StatelessWidget {
-  final String title;
-  final bool value;
-  final Function(bool) onChanged;
-
   const _NotificationDateTile({
     required this.title,
-    required this.value,
+    required this.values,
     required this.onChanged,
   });
+
+  final String title;
+  final List<String> values;
+  final Function(Time) onChanged;
+
+  int get hour => int.parse(values[0]);
+  int get minute => int.parse(values[1]);
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +147,9 @@ class _NotificationDateTile extends StatelessWidget {
       child: ListTile(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        title: const Text(
-          "通知時間",
-          style: TextStyle(
+        title: Text(
+          title,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -135,16 +158,27 @@ class _NotificationDateTile extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             showPicker(
               context: context,
-              value: Time(hour: 10, minute: 30),
+              value: Time(hour: hour, minute: minute),
               sunrise: const TimeOfDay(hour: 6, minute: 0),
               sunset: const TimeOfDay(hour: 18, minute: 0),
-              duskSpanInMinutes: 120, // optional
-              onChange: (time) {},
+              duskSpanInMinutes: 120,
+              accentColor: AppColor.secondary,
+              okText: Strings.updateLabel,
+              cancelText: Strings.closeLabel,
+              okStyle: const TextStyle(
+                color: AppColor.secondary,
+                fontWeight: FontWeight.bold,
+              ),
+              cancelStyle: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+              onChange: onChanged,
             ),
           ),
-          child: const Text(
-            "00：00",
-            style: TextStyle(
+          child: Text(
+            "$hour：$minute",
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

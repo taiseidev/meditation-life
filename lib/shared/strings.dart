@@ -1,6 +1,10 @@
 class Strings {
   const Strings._();
 
+  // common
+  static const updateLabel = "変更";
+  static const closeLabel = "閉じる";
+
   // meditation_detail_page
   static const meditationStartButtonLabel = "瞑想を開始する";
 
@@ -23,4 +27,8 @@ class Strings {
   // sound_setting_page
   static const volumeLabel = "音量";
   static const vibrationLabel = "バイブレーション";
+
+  // notification_page
+  static const notificationToggleLabel = "通知オン/オフ";
+  static const notificationTimeLabel = "通知時間";
 }

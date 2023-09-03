@@ -142,7 +142,6 @@ Future<void> _scheduleDaily8AMNotification() async {
 // 1回目に通知を飛ばす時間の作成
 tz.TZDateTime _nextInstanceOf8AM() {
   final now = tz.TZDateTime.now(tz.local);
-  print(now);
   tz.TZDateTime scheduledDate =
       tz.TZDateTime(tz.local, now.year, now.month, now.day, 13, 54);
   if (scheduledDate.isBefore(now)) {

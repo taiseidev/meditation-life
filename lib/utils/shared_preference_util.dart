@@ -19,11 +19,19 @@ class SharePreferenceUtil {
   Future<void> setBool(SharedPreferenceKey key, bool value) async =>
       await _prefs.setBool(key.name, value);
 
+  Future<void> setStringList(
+          SharedPreferenceKey key, List<String> strings) async =>
+      await _prefs.setStringList(key.name, strings);
+
   double? getDouble(SharedPreferenceKey key) => _prefs.getDouble(key.name);
   bool? getBool(SharedPreferenceKey key) => _prefs.getBool(key.name);
+  List<String>? getStringList(SharedPreferenceKey key) =>
+      _prefs.getStringList(key.name);
 }
 
 enum SharedPreferenceKey {
   volume,
   vibration,
+  notificationTimeList,
+  isNotificationEnabled
 }

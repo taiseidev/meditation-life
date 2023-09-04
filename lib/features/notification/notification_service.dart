@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -55,7 +55,7 @@ class NotificationService {
       0,
       Strings.appTitle,
       Strings.notificationMessage,
-      _fiveSecondsLater(),
+      _nextInstance(),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           '',
@@ -70,7 +70,7 @@ class NotificationService {
   }
 
 // 1回目に通知を飛ばす時間の作成
-  tz.TZDateTime _nextInstanceOf8AM() {
+  tz.TZDateTime _nextInstance() {
     final notificationTimeList =
         prefs.getStringList(SharedPreferenceKey.notificationTimeList) ??
             ["08", "00"];
@@ -99,6 +99,7 @@ class NotificationService {
   }
 
 // デバッグ用（5秒後に通知）
+  // ignore: unused_element
   tz.TZDateTime _fiveSecondsLater() {
     var later = tz.TZDateTime.now(tz.local);
 

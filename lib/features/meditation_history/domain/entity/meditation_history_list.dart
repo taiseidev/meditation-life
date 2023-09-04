@@ -5,30 +5,30 @@ class MeditationHistoryList {
   MeditationHistoryList(this.list);
   final List<MeditationHistory> list;
 
-  Map<String, List<String>> get events {
-    final Map<String, List<String>> result = {};
+  Map<String, List<String>> get events =>
+      list.fold<Map<String, List<String>>>({}, (acc, item) {
+        final dateKey = "${item.date.year}/${item.date.month}/${item.date.day}";
+        acc[dateKey] = (acc[dateKey] ?? [])..add(item.meditationId);
+        return acc;
+      });
 
-    for (final item in list) {
-      final date = item.date;
-      result
-          .putIfAbsent("${date.year}/${date.month}/${date.day}", () => [])
-          .add(item.meditationId);
-    }
-
-    return result;
-  }
-
-  String get thisMonth => events.keys.first;
+  String? get thisMonth => events.keys.firstOrNull;
 
   // 月のみを取得
   int get month {
-    final DateTime firstDate = DateFormat('y/M/d').parse(thisMonth);
-    return firstDate.month;
+    if (thisMonth == null) {
+      final now = DateTime.now();
+      return now.month;
+    }
+    return DateFormat('y/M/d').parse(thisMonth!).month;
   }
 
   // その月にどれくらいの日数が含まれているか
   int get daysInMonth {
-    final firstDate = DateFormat('y/M/d').parse(thisMonth);
+    if (thisMonth == null) {
+      return 30;
+    }
+    final firstDate = DateFormat('y/M/d').parse(thisMonth!);
     final lastDate = DateTime(firstDate.year, firstDate.month + 1, 0);
     return lastDate.day;
   }

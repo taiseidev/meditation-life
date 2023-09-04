@@ -68,23 +68,21 @@ class SoundSettingPage extends HookConsumerWidget {
                 ),
                 const Spacer(),
                 Consumer(
-                  builder: (context, ref, child) {
-                    return Slider(
-                      value: volume.value,
-                      onChanged: (value) {
-                        ref
-                            .read(vibrationProvider)
-                            .impact(HapticFeedbackType.lightImpact);
-                        volume.value = value;
-                      },
-                      onChangeEnd: (value) {
-                        ref
-                            .read(sharedPreferenceUtilProvider)
-                            .setDouble(SharedPreferenceKey.volume, value);
-                      },
-                      activeColor: AppColor.secondary,
-                    );
-                  },
+                  builder: (context, ref, child) => Slider(
+                    value: volume.value,
+                    onChanged: (value) {
+                      ref
+                          .read(vibrationProvider)
+                          .impact(HapticFeedbackType.lightImpact);
+                      volume.value = value;
+                    },
+                    onChangeEnd: (value) {
+                      ref
+                          .read(sharedPreferenceUtilProvider)
+                          .setDouble(SharedPreferenceKey.volume, value);
+                    },
+                    activeColor: AppColor.secondary,
+                  ),
                 ),
               ],
             ),

@@ -79,84 +79,85 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: DefaultTextStyle(
               style: const TextStyle(fontWeight: FontWeight.bold),
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.meditation.title,
-                      style: const TextStyle(fontSize: 24, color: Colors.white),
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon:
-                              Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-                          color: Colors.white,
-                          iconSize: 64,
-                          onPressed: () async {
-                            setState(() {
-                              isPlaying = !isPlaying;
-                            });
-                            if (isPlaying) {
-                              await player.play();
-                            } else {
-                              await player.stop();
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    StreamBuilder<Duration>(
-                      stream: player.positionStream,
-                      builder: (context, snapshot) {
-                        final position =
-                            snapshot.data?.inSeconds.toDouble() ?? 0.0;
-                        return Slider(
-                          value: isDragging ? sliderValue : position,
-                          min: 0,
-                          max: widget.meditation.duration.toDouble(),
-                          onChangeEnd: (value) {
-                            isDragging = false;
-                            player.seek(Duration(seconds: value.toInt()));
-                          },
-                          activeColor: AppColor.secondary,
-                          thumbColor: AppColor.secondary,
-                          secondaryActiveColor: AppColor.secondary,
-                          onChanged: (value) {
-                            setState(() {
-                              isDragging = true;
-                              sliderValue = value;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        StreamBuilder<Duration>(
-                          stream: player.positionStream,
-                          builder: (context, snapshot) {
-                            final position = snapshot.data ?? Duration.zero;
-                            return Text(
-                              position.inSeconds.formatTime(),
-                              style: const TextStyle(color: Colors.white),
-                            );
-                          },
-                        ),
-                        Text(
-                          widget.meditation.duration.formatTime(),
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.meditation.title,
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+                        color: Colors.white,
+                        iconSize: 64,
+                        onPressed: () async {
+                          setState(() {
+                            isPlaying = !isPlaying;
+                          });
+                          if (isPlaying) {
+                            await player.play();
+                          } else {
+                            await player.stop();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  StreamBuilder<Duration>(
+                    stream: player.positionStream,
+                    builder: (context, snapshot) {
+                      final position =
+                          snapshot.data?.inSeconds.toDouble() ?? 0.0;
+                      return Slider(
+                        value: isDragging
+                            ? sliderValue
+                            : position > widget.meditation.duration.toDouble()
+                                ? widget.meditation.duration.toDouble()
+                                : position,
+                        min: 0,
+                        max: widget.meditation.duration.toDouble(),
+                        onChangeEnd: (value) {
+                          isDragging = false;
+                          player.seek(Duration(seconds: value.toInt()));
+                        },
+                        activeColor: AppColor.secondary,
+                        thumbColor: AppColor.secondary,
+                        secondaryActiveColor: AppColor.secondary,
+                        onChanged: (value) {
+                          setState(() {
+                            isDragging = true;
+                            sliderValue = value;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StreamBuilder<Duration>(
+                        stream: player.positionStream,
+                        builder: (context, snapshot) {
+                          final position = snapshot.data ?? Duration.zero;
+                          return Text(
+                            position.inSeconds.formatTime(),
+                            style: const TextStyle(color: Colors.white),
+                          );
+                        },
+                      ),
+                      Text(
+                        widget.meditation.duration.formatTime(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

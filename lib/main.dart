@@ -91,6 +91,7 @@ Future<(PackageInfo, SharedPreferences, Isar)> initializeAppResources() async {
     SharedPreferences.getInstance(),
     Isar.open([SoundSchema], directory: await _getApplicationSupportPath())
   ]);
+
   return (
     results[0] as PackageInfo,
     results[1] as SharedPreferences,

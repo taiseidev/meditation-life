@@ -9,6 +9,9 @@ import 'package:meditation_life/utils/vibration_util.dart';
 class SoundSettingPage extends HookConsumerWidget {
   const SoundSettingPage({super.key});
 
+  static const defaultVolume = 1.0;
+  static const defaultVibrationFlag = true;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final volume = useState<double>(0.0);
@@ -18,11 +21,11 @@ class SoundSettingPage extends HookConsumerWidget {
         volume.value = ref
                 .read(sharedPreferenceUtilProvider)
                 .getDouble(SharedPreferenceKey.volume) ??
-            1.0;
+            defaultVolume;
         final vibrationEnabled = ref
                 .read(sharedPreferenceUtilProvider)
                 .getBool(SharedPreferenceKey.vibration) ??
-            true;
+            defaultVibrationFlag;
         ref
             .read(vibrationEnabledProvider.notifier)
             .update((state) => state = vibrationEnabled);

@@ -66,8 +66,9 @@ class NotificationPage extends HookConsumerWidget {
             title: Strings.notificationTimeLabel,
             values: notificationTimeList.value,
             onChanged: (value) {
-              final hour = value.hour.toString();
-              final minute = value.minute.toString();
+              // TODO:リファクタ
+              final hour = value.hour.toString().padLeft(2, '0');
+              final minute = value.minute.toString().padLeft(2, '0');
               notificationTimeList.value = [hour, minute];
               ref.read(sharedPreferenceUtilProvider).setStringList(
                   SharedPreferenceKey.notificationTimeList, [hour, minute]);
@@ -177,7 +178,7 @@ class _NotificationDateTile extends StatelessWidget {
             ),
           ),
           child: Text(
-            "$hour：$minute",
+            "${values[0]}：${values[1]}",
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

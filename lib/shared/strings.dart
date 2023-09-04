@@ -2,6 +2,7 @@ class Strings {
   const Strings._();
 
   // common
+  static const appTitle = "瞑想ライフ";
   static const updateLabel = "変更";
   static const closeLabel = "閉じる";
 
@@ -31,4 +32,7 @@ class Strings {
   // notification_page
   static const notificationToggleLabel = "通知オン/オフ";
   static const notificationTimeLabel = "通知時間";
+
+  // notification_service
+  static const notificationMessage = "本日の瞑想を行いましょう！";
 }

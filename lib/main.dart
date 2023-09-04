@@ -16,6 +16,7 @@ import 'package:meditation_life/features/notification/notification_service.dart'
 import 'package:meditation_life/features/sound/domain/entities/sound.dart';
 import 'package:meditation_life/firebase_options.dart';
 import 'package:meditation_life/utils/package_info_util.dart';
+import 'package:meditation_life/utils/riverpod_logger.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -49,17 +50,17 @@ Future<void> main() async {
   // 各パッケージのインスタンスを作成
   final (packageInfo, prefs, isar) = await initializeAppResources();
 
-  final container = ProviderContainer(
-    overrides: [
-      meditationRepositoryProvider.overrideWith(
-          (_) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
-      meditationHistoryRepositoryProvider.overrideWith((_) =>
-          FirebaseMeditationHistoryRepository(FirebaseFirestore.instance)),
-      packageInfoProvider.overrideWithValue(packageInfo),
-      sharedPreferenceProvider.overrideWithValue(prefs),
-      localDbProvider.overrideWithValue(isar),
-    ],
-  );
+  final container = ProviderContainer(overrides: [
+    meditationRepositoryProvider.overrideWith(
+        (_) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
+    meditationHistoryRepositoryProvider.overrideWith(
+        (_) => FirebaseMeditationHistoryRepository(FirebaseFirestore.instance)),
+    packageInfoProvider.overrideWithValue(packageInfo),
+    sharedPreferenceProvider.overrideWithValue(prefs),
+    localDbProvider.overrideWithValue(isar),
+  ], observers: [
+    RiverpodLogger()
+  ]);
 
   await Future.wait([
     // 通知に関する設定

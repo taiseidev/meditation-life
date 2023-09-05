@@ -8,6 +8,7 @@ import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+// TODO: 全体的にリファクタ
 class MeditationHistoryPage extends HookConsumerWidget {
   const MeditationHistoryPage({super.key});
 
@@ -17,6 +18,7 @@ class MeditationHistoryPage extends HookConsumerWidget {
 
     final focusedDay = useState(DateTime.now());
     final selectedDay = useState<DateTime?>(null);
+    final pageMonth = useState<DateTime>(DateTime.now());
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +45,7 @@ class MeditationHistoryPage extends HookConsumerWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      histories.month.toString(),
+                      histories.month(pageMonth.value).toString(),
                       style: const TextStyle(
                         color: AppColor.secondary,
                         fontSize: 24,
@@ -143,6 +145,7 @@ class MeditationHistoryPage extends HookConsumerWidget {
                     focusedDay.value = focusDay;
                   },
                   onPageChanged: (focusDay) {
+                    pageMonth.value = focusDay;
                     focusedDay.value = focusDay;
                     ref
                         .read(meditationHistoryNotifierProvider.notifier)

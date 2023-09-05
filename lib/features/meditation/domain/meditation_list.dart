@@ -16,12 +16,8 @@ class MeditationList {
   String? get thisMonth => events.keys.firstOrNull;
 
   // 月のみを取得
-  int get month {
-    if (thisMonth == null) {
-      final now = DateTime.now();
-      return now.month;
-    }
-    return DateFormat('y/M/d').parse(thisMonth!).month;
+  int month(DateTime now) {
+    return now.month;
   }
 
   // その月にどれくらいの日数が含まれているか

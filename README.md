@@ -1,3 +1,6 @@
+
+![brandmark-design](https://github.com/taiseidev/meditation-life/assets/91307335/8b00e572-3b6c-412a-861a-e0723070c547)
+
 # 瞑想ライフ
 毎日簡単に瞑想の記録をつけることができるアプリです。<br>
 個人的に使用する目的なので、試したい技術を導入してオーバーエンジニアリングになっています。<br>

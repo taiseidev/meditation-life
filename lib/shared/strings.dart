@@ -6,6 +6,10 @@ class Strings {
   static const updateLabel = '変更';
   static const closeLabel = '閉じる';
 
+  // meditation_history_page
+  static const meditationHistoryTitle = '瞑想履歴';
+  static const monthlyMeditationProgress = '月の瞑想進捗';
+
   // meditation_detail_page
   static const meditationStartButtonLabel = '瞑想を開始する';
 

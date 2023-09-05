@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
-import 'package:meditation_life/features/meditation/presentation/pages/meditation_play_page.dart';
+import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
 import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationStartModal extends StatelessWidget {
@@ -42,7 +42,7 @@ class MeditationStartModal extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => MeditationPlayScreen(
-                      meditation: meditation,
+                      meditation,
                     ),
                   ),
                 );

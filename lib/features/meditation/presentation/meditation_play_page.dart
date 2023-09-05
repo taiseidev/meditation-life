@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
-import 'package:meditation_life/features/meditation/presentation/meditation_completed_modal.dart';
+import 'package:meditation_life/features/meditation/presentation/modal/meditation_completed_modal.dart';
 import 'package:meditation_life/shared/extension/int_extension.dart';
 import 'package:meditation_life/shared/res/color.dart';
 
@@ -18,7 +18,7 @@ class MeditationPlayScreen extends StatefulWidget {
 class MeditationPlayScreenState extends State<MeditationPlayScreen> {
   bool isPlaying = true;
   double volume = 0.5;
-  double sliderValue = 0.0;
+  double sliderValue = 0;
   bool isDragging = false;
 
   final player = AudioPlayer();
@@ -119,7 +119,6 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                             : position > widget.meditation.duration.toDouble()
                                 ? widget.meditation.duration.toDouble()
                                 : position,
-                        min: 0,
                         max: widget.meditation.duration.toDouble(),
                         onChangeEnd: (value) {
                           isDragging = false;

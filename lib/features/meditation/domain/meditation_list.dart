@@ -1,14 +1,15 @@
 import 'package:intl/intl.dart';
-import 'package:meditation_life/features/meditation_history/domain/entity/meditation_history.dart';
+import 'package:meditation_life/features/meditation/domain/meditation.dart';
 
-class MeditationHistoryList {
-  MeditationHistoryList(this.list);
-  final List<MeditationHistory> list;
+class MeditationList {
+  MeditationList(this.list);
+  final List<Meditation> list;
 
   Map<String, List<String>> get events =>
       list.fold<Map<String, List<String>>>({}, (acc, item) {
-        final dateKey = '${item.date.year}/${item.date.month}/${item.date.day}';
-        acc[dateKey] = (acc[dateKey] ?? [])..add(item.meditationId);
+        final dateKey =
+            '${item.date!.year}/${item.date!.month}/${item.date!.day}';
+        acc[dateKey] = (acc[dateKey] ?? [])..add(item.id);
         return acc;
       });
 
@@ -34,12 +35,11 @@ class MeditationHistoryList {
   }
 
   // 選択した日付の List<MeditationHistory>
-  List<MeditationHistory> getMeditationHistoryForDate(DateTime selectedDate) {
-    return list.where((item) {
-      final itemDate = item.date;
-      return itemDate.year == selectedDate.year &&
-          itemDate.month == selectedDate.month &&
-          itemDate.day == selectedDate.day;
+  List<Meditation> getMeditationHistoryForDate(DateTime targetDate) {
+    return list.where((meditation) {
+      return meditation.date?.year == targetDate.year &&
+          meditation.date?.month == targetDate.month &&
+          meditation.date?.day == targetDate.day;
     }).toList();
   }
 }

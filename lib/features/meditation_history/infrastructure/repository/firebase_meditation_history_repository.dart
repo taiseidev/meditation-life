@@ -40,6 +40,7 @@ class FirebaseMeditationHistoryRepository
         .doc(auth.currentUser!.uid)
         .collection(collectionName)
         .get();
+
     return snapshot.docs
         .map((doc) => MeditationHistoryDto.fromDocument(doc).toDomain())
         .toList();

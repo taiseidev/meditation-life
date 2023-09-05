@@ -1,44 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
 import 'package:meditation_life/shared/extension/int_extension.dart';
 import 'package:meditation_life/shared/res/color.dart';
+import 'package:meditation_life/shared/strings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class MeditationHistoryPage extends ConsumerWidget {
+class MeditationHistoryPage extends HookConsumerWidget {
   const MeditationHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(meditationHistoryNotifierProvider);
 
-    Widget buildEventsMarker(
-      DateTime date,
-      List events,
-    ) =>
-        Container(
-          decoration: BoxDecoration(
-            color: const Color(0xffADD8E6),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          alignment: Alignment.center,
-          width: 15,
-          height: 15,
-          child: Text(
-            '${events.length}',
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        );
+    final focusedDay = useState(DateTime.now());
+    final selectedDay = useState<DateTime?>(null);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '瞑想履歴',
+          Strings.meditationHistoryTitle,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -60,7 +43,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      '${histories.month} ',
+                      histories.month.toString(),
                       style: const TextStyle(
                         color: AppColor.secondary,
                         fontSize: 24,
@@ -68,7 +51,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                       ),
                     ),
                     const Text(
-                      '月の瞑想進捗',
+                      Strings.monthlyMeditationProgress,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -76,7 +59,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                     ),
                     const SizedBox(width: 40),
                     Text(
-                      '${histories.events.length} ',
+                      histories.events.length.toString(),
                       style: const TextStyle(
                         color: AppColor.secondary,
                         fontSize: 24,
@@ -145,17 +128,30 @@ class MeditationHistoryPage extends ConsumerWidget {
                   ),
                   firstDay: DateTime.utc(2010),
                   lastDay: DateTime.utc(2030),
-                  focusedDay: DateTime.now(),
+                  focusedDay: focusedDay.value,
                   locale: 'ja_JP',
                   eventLoader: (date) {
                     return histories
                             .events['${date.year}/${date.month}/${date.day}'] ??
                         [];
                   },
+                  selectedDayPredicate: (day) {
+                    return isSameDay(selectedDay.value, day);
+                  },
+                  onDaySelected: (selectDay, focusDay) {
+                    selectedDay.value = selectDay;
+                    focusedDay.value = focusDay;
+                  },
+                  onPageChanged: (focusDay) {
+                    focusedDay.value = focusDay;
+                    ref
+                        .read(meditationHistoryNotifierProvider.notifier)
+                        .fetchMeditationListPerMonth(focusDay);
+                  },
                   calendarBuilders: CalendarBuilders(
                     markerBuilder: (context, date, events) {
                       if (events.isNotEmpty) {
-                        return buildEventsMarker(date, events);
+                        return _Events(date, events);
                       }
                       return null;
                     },
@@ -171,27 +167,32 @@ class MeditationHistoryPage extends ConsumerWidget {
             ),
             SliverList.builder(
               itemCount: histories
-                  .getMeditationHistoryForDate(DateTime(2023, 9, 2))
+                  .getMeditationHistoryForDate(
+                    selectedDay.value ?? DateTime.now(),
+                  )
                   .length,
               itemBuilder: (context, index) {
+                final item = histories.getMeditationHistoryForDate(
+                  selectedDay.value ?? DateTime.now(),
+                )[index];
+
                 return ListTile(
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      imageUrl:
-                          'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80',
+                      imageUrl: item.thumbnailUrl,
                       width: 100,
                     ),
                   ),
-                  title: const Text(
-                    '星の記憶',
-                    style: TextStyle(
+                  title: Text(
+                    item.title,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   subtitle: Text(
-                    '時間：${180.formatTime()}',
+                    '時間：${item.duration.formatTime()}',
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
@@ -208,6 +209,37 @@ class MeditationHistoryPage extends ConsumerWidget {
         ),
         loading: () => const Center(
           child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+}
+
+class _Events extends StatelessWidget {
+  const _Events(
+    this.date,
+    this.events,
+  );
+
+  final DateTime date;
+  final List events;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xffADD8E6),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      alignment: Alignment.center,
+      width: 15,
+      height: 15,
+      child: Text(
+        events.length.toString(),
+        style: const TextStyle(
+          color: Colors.grey,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

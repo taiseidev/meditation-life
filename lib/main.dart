@@ -16,7 +16,6 @@ import 'package:meditation_life/features/notification/notification_service.dart'
 import 'package:meditation_life/features/sound/domain/entities/sound.dart';
 import 'package:meditation_life/firebase_options.dart';
 import 'package:meditation_life/utils/package_info_util.dart';
-import 'package:meditation_life/utils/riverpod_logger.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -63,7 +62,7 @@ Future<void> main() async {
       localDbProvider.overrideWithValue(isar),
     ],
     observers: [
-      RiverpodLogger(),
+      // RiverpodLogger(),
     ],
   );
 

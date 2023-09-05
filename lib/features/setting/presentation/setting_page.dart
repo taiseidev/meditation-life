@@ -20,57 +20,56 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0.95),
       appBar: const CommonAppBar(title: Strings.settingPageTitle),
-      body: Scaffold(
-        body: Column(
-          children: [
-            _SettingsTile(
-              title: Strings.notificationSettingLabel,
-              callback: () => Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (context) => const NotificationPage(),
-                ),
+      body: Column(
+        children: [
+          _SettingsTile(
+            title: Strings.notificationSettingLabel,
+            callback: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => const NotificationPage(),
               ),
             ),
-            _SettingsTile(
-              title: Strings.soundSettingLabel,
-              callback: () => Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (context) => const SoundSettingPage(),
-                ),
+          ),
+          _SettingsTile(
+            title: Strings.soundSettingLabel,
+            callback: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => const SoundSettingPage(),
               ),
             ),
-            _SettingsTile(
-              title: Strings.termsOfServiceLabel,
-              callback: () => _launchUrl(Strings.termsOfServiceUrl),
-            ),
-            _SettingsTile(
-              title: Strings.privacyPolicyLabel,
-              callback: () => _launchUrl(Strings.privacyPolicyUrl),
-            ),
-            _SettingsTile(
-              title: Strings.contactLabel,
-              callback: () => _launchUrl(Strings.contactUrl),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 24),
-              child: Align(
-                child: Consumer(
-                  builder: (context, ref, child) => Text(
-                    Strings.appVersion(
-                      ref.read(packageInfoUtilProvider).version,
-                    ),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+          ),
+          _SettingsTile(
+            title: Strings.termsOfServiceLabel,
+            callback: () => _launchUrl(Strings.termsOfServiceUrl),
+          ),
+          _SettingsTile(
+            title: Strings.privacyPolicyLabel,
+            callback: () => _launchUrl(Strings.privacyPolicyUrl),
+          ),
+          _SettingsTile(
+            title: Strings.contactLabel,
+            callback: () => _launchUrl(Strings.contactUrl),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24),
+            child: Align(
+              child: Consumer(
+                builder: (context, ref, child) => Text(
+                  Strings.appVersion(
+                    ref.read(packageInfoUtilProvider).version,
+                  ),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

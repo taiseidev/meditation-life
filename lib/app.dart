@@ -20,6 +20,10 @@ class _AppState extends State<App> {
       AssetImage(Assets.icons.meditationIcon.path),
       context,
     );
+    precacheImage(
+      AssetImage(Assets.icons.appLogo.path),
+      context,
+    );
   }
 
   @override

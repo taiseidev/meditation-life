@@ -21,6 +21,7 @@ class MeditationHistoryPage extends HookConsumerWidget {
     final pageMonth = useState<DateTime>(DateTime.now());
 
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
         title: const Text(
           Strings.meditationHistoryTitle,
@@ -231,7 +232,7 @@ class _Events extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xffADD8E6),
+        color: AppColor.accent,
         borderRadius: BorderRadius.circular(10),
       ),
       alignment: Alignment.center,
@@ -240,7 +241,7 @@ class _Events extends StatelessWidget {
       child: Text(
         events.length.toString(),
         style: const TextStyle(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: 10,
           fontWeight: FontWeight.bold,
         ),

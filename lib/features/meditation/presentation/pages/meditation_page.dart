@@ -12,6 +12,7 @@ class MeditationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(meditationNotifierProvider);
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
         title: const Text(
           '瞑想一覧',

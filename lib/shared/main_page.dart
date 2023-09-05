@@ -24,7 +24,17 @@ class MainPage extends ConsumerWidget {
     ];
 
     return Scaffold(
-      body: pages[ref.watch(selectedIndexProvider)],
+      body: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            child: Image.asset(
+              Assets.icons.appLogo.path,
+            ),
+          ),
+          pages[ref.watch(selectedIndexProvider)],
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(vibrationProvider).impact(HapticFeedbackType.mediumImpact);

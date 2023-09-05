@@ -12,15 +12,26 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/app_logo.png
+  AssetGenImage get appLogo => const AssetGenImage('assets/icons/app_logo.png');
+
   /// File path: assets/icons/meditation_icon.png
   AssetGenImage get meditationIcon =>
       const AssetGenImage('assets/icons/meditation_icon.png');
+}
+
+class $AssetsSvgGen {
+  const $AssetsSvgGen();
+
+  /// File path: assets/svg/app_animation_logo.svg
+  String get appAnimationLogo => 'assets/svg/app_animation_logo.svg';
 }
 
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsSvgGen svg = $AssetsSvgGen();
 }
 
 class AssetGenImage {

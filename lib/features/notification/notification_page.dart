@@ -9,27 +9,29 @@ import 'package:meditation_life/utils/shared_preference_util.dart';
 class NotificationPage extends HookConsumerWidget {
   const NotificationPage({super.key});
 
-  static const defaultTimeList = ["08", "00"];
+  static const defaultTimeList = ['08', '00'];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isNotificationEnabled = useState<bool>(true);
     final notificationTimeList = useState<List<String>>(defaultTimeList);
 
-    useEffect(() {
-      Future(() async {
-        isNotificationEnabled.value = ref
-                .read(sharedPreferenceUtilProvider)
-                .getBool(SharedPreferenceKey.isNotificationEnabled) ??
-            true;
-        notificationTimeList.value =
-            ref.read(sharedPreferenceUtilProvider).getStringList(
-                      SharedPreferenceKey.notificationTimeList,
-                    ) ??
-                defaultTimeList;
-      });
-      return null;
-    });
+    useEffect(
+      () {
+        Future(() async {
+          isNotificationEnabled.value = ref
+                  .read(sharedPreferenceUtilProvider)
+                  .getBool(SharedPreferenceKey.isNotificationEnabled) ??
+              true;
+          notificationTimeList.value =
+              ref.read(sharedPreferenceUtilProvider).getStringList(
+                        SharedPreferenceKey.notificationTimeList,
+                      ) ??
+                  defaultTimeList;
+        });
+        return null;
+      },
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -66,14 +68,15 @@ class NotificationPage extends HookConsumerWidget {
             title: Strings.notificationTimeLabel,
             values: notificationTimeList.value,
             onChanged: (value) {
-              // TODO:リファクタ
               final hour = value.hour.toString().padLeft(2, '0');
               final minute = value.minute.toString().padLeft(2, '0');
               notificationTimeList.value = [hour, minute];
               ref.read(sharedPreferenceUtilProvider).setStringList(
-                  SharedPreferenceKey.notificationTimeList, [hour, minute]);
+                SharedPreferenceKey.notificationTimeList,
+                [hour, minute],
+              );
             },
-          )
+          ),
         ],
       ),
     );
@@ -81,19 +84,18 @@ class NotificationPage extends HookConsumerWidget {
 }
 
 class _SettingsSwitchTile extends StatelessWidget {
-  final String title;
-  final bool value;
-  final Function(bool) onChanged;
-
   const _SettingsSwitchTile({
     required this.title,
     required this.value,
     required this.onChanged,
   });
+  final String title;
+  final bool value;
+  final Function(bool) onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -137,7 +139,7 @@ class _NotificationDateTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -156,13 +158,10 @@ class _NotificationDateTile extends StatelessWidget {
           ),
         ),
         trailing: GestureDetector(
-          onTap: () => Navigator.of(context).push(
+          onTap: () => Navigator.of(context).push<void>(
             showPicker(
               context: context,
               value: Time(hour: hour, minute: minute),
-              sunrise: const TimeOfDay(hour: 6, minute: 0),
-              sunset: const TimeOfDay(hour: 18, minute: 0),
-              duskSpanInMinutes: 120,
               accentColor: AppColor.secondary,
               okText: Strings.updateLabel,
               cancelText: Strings.closeLabel,
@@ -175,10 +174,10 @@ class _NotificationDateTile extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               onChange: onChanged,
-            ),
+            ) as Route<void>,
           ),
           child: Text(
-            "${values[0]}：${values[1]}",
+            '${values[0]} : ${values[1]}',
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

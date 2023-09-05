@@ -6,22 +6,16 @@ import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:meditation_life/utils/vibration_util.dart';
 
+// TODO: 全体的にリファクタ
 class SoundSettingPage extends HookConsumerWidget {
   const SoundSettingPage({super.key});
 
-  static const defaultVolume = 1.0;
   static const defaultVibrationFlag = true;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final volume = useState<double>(0.0);
-
     useEffect(() {
       Future(() async {
-        volume.value = ref
-                .read(sharedPreferenceUtilProvider)
-                .getDouble(SharedPreferenceKey.volume) ??
-            defaultVolume;
         final vibrationEnabled = ref
                 .read(sharedPreferenceUtilProvider)
                 .getBool(SharedPreferenceKey.vibration) ??
@@ -30,6 +24,7 @@ class SoundSettingPage extends HookConsumerWidget {
             .read(vibrationEnabledProvider.notifier)
             .update((state) => state = vibrationEnabled);
       });
+
       return null;
     });
 
@@ -54,39 +49,7 @@ class SoundSettingPage extends HookConsumerWidget {
       ),
       body: ListView(
         children: [
-          ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            title: Row(
-              children: [
-                const Text(
-                  Strings.volumeLabel,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                Consumer(
-                  builder: (context, ref, child) => Slider(
-                    value: volume.value,
-                    onChanged: (value) {
-                      ref
-                          .read(vibrationProvider)
-                          .impact(HapticFeedbackType.lightImpact);
-                      volume.value = value;
-                    },
-                    onChangeEnd: (value) {
-                      ref
-                          .read(sharedPreferenceUtilProvider)
-                          .setDouble(SharedPreferenceKey.volume, value);
-                    },
-                    activeColor: AppColor.secondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const _SliderTile(),
           Consumer(
             builder: (context, ref, child) {
               return _SettingSwitchTile(
@@ -112,20 +75,67 @@ class SoundSettingPage extends HookConsumerWidget {
   }
 }
 
-class _SettingSwitchTile extends StatelessWidget {
-  final String title;
-  final bool value;
-  final Function(bool) onChanged;
+class _SliderTile extends HookConsumerWidget {
+  const _SliderTile();
 
+  static const defaultVolume = 1.0;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final volume = useState<double>(
+      ref
+              .read(sharedPreferenceUtilProvider)
+              .getDouble(SharedPreferenceKey.volume) ??
+          defaultVolume,
+    );
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      title: Row(
+        children: [
+          const Text(
+            Strings.volumeLabel,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Spacer(),
+          Slider(
+            value: volume.value,
+            onChanged: (value) {
+              ref
+                  .read(vibrationProvider)
+                  .impact(HapticFeedbackType.lightImpact);
+              volume.value = value;
+            },
+            onChangeEnd: (value) {
+              ref
+                  .read(sharedPreferenceUtilProvider)
+                  .setDouble(SharedPreferenceKey.volume, value);
+            },
+            activeColor: AppColor.secondary,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SettingSwitchTile extends StatelessWidget {
   const _SettingSwitchTile({
     required this.title,
     required this.value,
     required this.onChanged,
   });
 
+  final String title;
+  final bool value;
+  final Function(bool) onChanged;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(

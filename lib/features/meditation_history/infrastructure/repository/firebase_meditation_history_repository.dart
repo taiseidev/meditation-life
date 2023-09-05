@@ -6,18 +6,16 @@ import 'package:meditation_life/features/meditation_history/infrastructure/dtos/
 
 class FirebaseMeditationHistoryRepository
     implements MeditationHistoryRepository {
+  FirebaseMeditationHistoryRepository(this._db);
   final FirebaseFirestore _db;
 
-  FirebaseMeditationHistoryRepository(this._db);
-
-  static const _usersCollection = "users";
-  static const _meditationId = "meditationId";
-  static const _date = "date";
+  static const _usersCollection = 'users';
+  static const _meditationId = 'meditationId';
+  static const _date = 'date';
 
   @override
   Future<void> addMeditationHistory(String meditationId, DateTime date) async {
     final collectionName = _getCollectionName(date);
-    // TODO: FirebaseAuth周りを修正する
     final auth = FirebaseAuth.instance;
     await _db
         .collection(_usersCollection)
@@ -33,9 +31,9 @@ class FirebaseMeditationHistoryRepository
 
   @override
   Future<List<MeditationHistory>> fetchMeditationHistories(
-      DateTime date) async {
+    DateTime date,
+  ) async {
     final collectionName = _getCollectionName(date);
-    // TODO: FirebaseAuth周りを修正する
     final auth = FirebaseAuth.instance;
     final snapshot = await _db
         .collection(_usersCollection)

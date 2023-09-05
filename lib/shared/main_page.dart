@@ -1,7 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:meditation_life/features/meditation/presentation/meditation_page.dart';
+import 'package:meditation_life/features/meditation/presentation/pages/meditation_page.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/features/setting/presentation/setting_page.dart';
 import 'package:meditation_life/shared/res/color.dart';
@@ -34,7 +34,7 @@ class MainPage extends ConsumerWidget {
         backgroundColor: AppColor.secondary.withOpacity(0.6),
         shape: const CircleBorder(),
         child: Image.asset(
-          "assets/icons/meditation_icon.png",
+          'assets/icons/meditation_icon.png',
           width: 20,
         ),
       ),

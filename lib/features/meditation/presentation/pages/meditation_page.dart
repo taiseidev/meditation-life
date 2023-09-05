@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:meditation_life/features/meditation/presentation/meditation_detail_page.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_notifier.dart';
+import 'package:meditation_life/features/meditation/presentation/pages/meditation_detail_page.dart';
 import 'package:meditation_life/shared/extension/int_extension.dart';
 
 class MeditationPage extends ConsumerWidget {
@@ -53,7 +53,7 @@ class MeditationPage extends ConsumerWidget {
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<void>(
                     builder: (context) => MeditationDetailView(meditation),
                   ),
                 ),
@@ -62,7 +62,7 @@ class MeditationPage extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) => const Center(
-          child: Text("エラーが発生しました"),
+          child: Text('エラーが発生しました'),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),

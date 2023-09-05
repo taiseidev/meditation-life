@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
-import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
+import 'package:meditation_life/features/meditation/presentation/pages/meditation_play_page.dart';
 import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationStartModal extends StatelessWidget {
@@ -26,7 +26,7 @@ class MeditationStartModal extends StatelessWidget {
         ),
       ),
       content: const Text(
-        "静かな場所に座り、心地よい姿勢を取ってください。",
+        '静かな場所に座り、心地よい姿勢を取ってください。',
         style: TextStyle(
           color: Colors.white,
           fontSize: 14,
@@ -38,15 +38,17 @@ class MeditationStartModal extends StatelessWidget {
           builder: (context, ref, child) {
             return TextButton(
               onPressed: () async {
-                Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MeditationPlayScreen(meditation),
+                    builder: (context) => MeditationPlayScreen(
+                      meditation: meditation,
+                    ),
                   ),
                 );
               },
               child: const Text(
-                "開始",
+                '開始',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -55,7 +57,7 @@ class MeditationStartModal extends StatelessWidget {
               ),
             );
           },
-        )
+        ),
       ],
     );
   }

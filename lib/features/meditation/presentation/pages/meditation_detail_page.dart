@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
-import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
+import 'package:meditation_life/features/meditation/presentation/pages/meditation_play_page.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
 
 class MeditationDetailView extends StatelessWidget {
-  final Meditation meditation;
-
   const MeditationDetailView(this.meditation, {super.key});
+  final Meditation meditation;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +31,8 @@ class MeditationDetailView extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Hero(
               tag: meditation.id,
@@ -51,15 +49,18 @@ class MeditationDetailView extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => MeditationPlayScreen(meditation)),
+                  builder: (context) =>
+                      MeditationPlayScreen(meditation: meditation),
+                ),
               ),
               child: Container(
                 width: double.infinity,
                 height: 50,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: AppColor.secondary,
-                    borderRadius: BorderRadius.circular(20)),
+                  color: AppColor.secondary,
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: const Text(
                   Strings.meditationStartButtonLabel,
                   style: TextStyle(

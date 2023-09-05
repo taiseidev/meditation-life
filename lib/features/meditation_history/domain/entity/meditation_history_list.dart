@@ -7,7 +7,7 @@ class MeditationHistoryList {
 
   Map<String, List<String>> get events =>
       list.fold<Map<String, List<String>>>({}, (acc, item) {
-        final dateKey = "${item.date.year}/${item.date.month}/${item.date.day}";
+        final dateKey = '${item.date.year}/${item.date.month}/${item.date.day}';
         acc[dateKey] = (acc[dateKey] ?? [])..add(item.meditationId);
         return acc;
       });

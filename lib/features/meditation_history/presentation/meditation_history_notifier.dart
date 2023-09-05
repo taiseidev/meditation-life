@@ -6,9 +6,12 @@ import 'package:meditation_life/features/meditation_history/domain/usecase/medit
 
 final meditationHistoryNotifierProvider =
     AsyncNotifierProvider<MeditationHistoryNotifier, MeditationHistoryList>(
-  () => MeditationHistoryNotifier(),
+  MeditationHistoryNotifier.new,
 );
 
+// メモ
+// AsyncNotifier内部的にstateをAsyncValueでラップしている
+// copyWithPreviousを利用することで前の状態を維持することができる
 class MeditationHistoryNotifier extends AsyncNotifier<MeditationHistoryList> {
   @override
   FutureOr<MeditationHistoryList> build() async => _init();
@@ -19,5 +22,11 @@ class MeditationHistoryNotifier extends AsyncNotifier<MeditationHistoryList> {
         .read(meditationHistoryUsecaseProvider)
         .fetchMeditationHistories(now);
     return MeditationHistoryList(meditationHistories);
+  }
+
+  Future<MeditationHistoryList> test() async {
+    state = const AsyncLoading<MeditationHistoryList>().copyWithPrevious(state);
+
+    return MeditationHistoryList([]);
   }
 }

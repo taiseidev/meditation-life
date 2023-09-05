@@ -26,7 +26,7 @@ class MeditationHistoryPage extends ConsumerWidget {
           width: 15,
           height: 15,
           child: Text(
-            "${events.length}",
+            '${events.length}',
             style: const TextStyle(
               color: Colors.grey,
               fontSize: 10,
@@ -47,6 +47,7 @@ class MeditationHistoryPage extends ConsumerWidget {
         backgroundColor: Colors.black,
       ),
       body: state.when(
+        skipLoadingOnReload: false,
         data: (histories) => CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -59,7 +60,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      "${histories.month} ",
+                      '${histories.month} ',
                       style: const TextStyle(
                         color: AppColor.secondary,
                         fontSize: 24,
@@ -67,7 +68,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                       ),
                     ),
                     const Text(
-                      "月の瞑想進捗",
+                      '月の瞑想進捗',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                     ),
                     const SizedBox(width: 40),
                     Text(
-                      "${histories.events.length} ",
+                      '${histories.events.length} ',
                       style: const TextStyle(
                         color: AppColor.secondary,
                         fontSize: 24,
@@ -83,7 +84,7 @@ class MeditationHistoryPage extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      "/${histories.daysInMonth}日",
+                      '/${histories.daysInMonth}日',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -142,13 +143,13 @@ class MeditationHistoryPage extends ConsumerWidget {
                       color: AppColor.secondary,
                     ),
                   ),
-                  firstDay: DateTime.utc(2010, 1, 1),
-                  lastDay: DateTime.utc(2030, 1, 1),
+                  firstDay: DateTime.utc(2010),
+                  lastDay: DateTime.utc(2030),
                   focusedDay: DateTime.now(),
                   locale: 'ja_JP',
                   eventLoader: (date) {
                     return histories
-                            .events["${date.year}/${date.month}/${date.day}"] ??
+                            .events['${date.year}/${date.month}/${date.day}'] ??
                         [];
                   },
                   calendarBuilders: CalendarBuilders(
@@ -178,12 +179,12 @@ class MeditationHistoryPage extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl:
-                          "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
+                          'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80',
                       width: 100,
                     ),
                   ),
                   title: const Text(
-                    "星の記憶",
+                    '星の記憶',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

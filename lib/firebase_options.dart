@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '110950896495',
     projectId: 'meditation-life-pj',
     storageBucket: 'meditation-life-pj.appspot.com',
-    iosClientId: '110950896495-bsdq8an4295okdahl0hn4univb8tpf8h.apps.googleusercontent.com',
+    iosClientId:
+        '110950896495-bsdq8an4295okdahl0hn4univb8tpf8h.apps.googleusercontent.com',
     iosBundleId: 'com.meditation.life.meditationLife',
   );
 }

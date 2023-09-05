@@ -17,7 +17,8 @@ class MeditationHistoryUsecase {
   }
 
   Future<List<MeditationHistory>> fetchMeditationHistories(
-      DateTime date) async {
-    return await _repository.fetchMeditationHistories(date);
+    DateTime date,
+  ) async {
+    return _repository.fetchMeditationHistories(date);
   }
 }

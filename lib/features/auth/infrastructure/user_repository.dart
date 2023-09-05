@@ -4,7 +4,9 @@ import 'package:meditation_life/features/auth/infrastructure/auth_repository.dar
 
 final userRepositoryProvider = Provider<UserRepository>(
   (ref) => UserRepository(
-      FirebaseFirestore.instance, ref.read(authRepositoryProvider)),
+    FirebaseFirestore.instance,
+    ref.read(authRepositoryProvider),
+  ),
 );
 
 class UserRepository {
@@ -12,8 +14,8 @@ class UserRepository {
   final FirebaseFirestore _db;
   final AuthRepository _authRepository;
 
-  static const _collection = "users";
-  static const _id = "id";
+  static const _collection = 'users';
+  static const _id = 'id';
 
   Future<void> createUser() async {
     final auth = _authRepository.authUser;

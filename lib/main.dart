@@ -42,7 +42,7 @@ Future<void> main() async {
   timezone.initializeTimeZones();
 
   // intlパッケージのDateFormatを初期化
-  initializeDateFormatting();
+  await initializeDateFormatting();
 
   // Firebaseの初期化処理
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -50,17 +50,22 @@ Future<void> main() async {
   // 各パッケージのインスタンスを作成
   final (packageInfo, prefs, isar) = await initializeAppResources();
 
-  final container = ProviderContainer(overrides: [
-    meditationRepositoryProvider.overrideWith(
-        (_) => FirebaseMeditationRepository(FirebaseFirestore.instance)),
-    meditationHistoryRepositoryProvider.overrideWith(
-        (_) => FirebaseMeditationHistoryRepository(FirebaseFirestore.instance)),
-    packageInfoProvider.overrideWithValue(packageInfo),
-    sharedPreferenceProvider.overrideWithValue(prefs),
-    localDbProvider.overrideWithValue(isar),
-  ], observers: [
-    RiverpodLogger()
-  ]);
+  final container = ProviderContainer(
+    overrides: [
+      meditationRepositoryProvider.overrideWith(
+        (_) => FirebaseMeditationRepository(FirebaseFirestore.instance),
+      ),
+      meditationHistoryRepositoryProvider.overrideWith(
+        (_) => FirebaseMeditationHistoryRepository(FirebaseFirestore.instance),
+      ),
+      packageInfoProvider.overrideWithValue(packageInfo),
+      sharedPreferenceProvider.overrideWithValue(prefs),
+      localDbProvider.overrideWithValue(isar),
+    ],
+    observers: [
+      RiverpodLogger(),
+    ],
+  );
 
   await Future.wait([
     // 通知に関する設定
@@ -90,7 +95,7 @@ Future<(PackageInfo, SharedPreferences, Isar)> initializeAppResources() async {
   final results = await Future.wait([
     PackageInfo.fromPlatform(),
     SharedPreferences.getInstance(),
-    Isar.open([SoundSchema], directory: await _getApplicationSupportPath())
+    Isar.open([SoundSchema], directory: await _getApplicationSupportPath()),
   ]);
 
   return (

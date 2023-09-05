@@ -28,7 +28,7 @@ class SettingPage extends StatelessWidget {
               title: Strings.notificationSettingLabel,
               callback: () => Navigator.push(
                 context,
-                MaterialPageRoute(
+                MaterialPageRoute<void>(
                   builder: (context) => const NotificationPage(),
                 ),
               ),
@@ -37,7 +37,7 @@ class SettingPage extends StatelessWidget {
               title: Strings.soundSettingLabel,
               callback: () => Navigator.push(
                 context,
-                MaterialPageRoute(
+                MaterialPageRoute<void>(
                   builder: (context) => const SoundSettingPage(),
                 ),
               ),

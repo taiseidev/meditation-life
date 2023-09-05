@@ -55,7 +55,7 @@ class SoundSettingPage extends HookConsumerWidget {
               return _SettingSwitchTile(
                 title: Strings.vibrationLabel,
                 value: ref.watch(vibrationEnabledProvider),
-                onChanged: (value) {
+                onChanged: ({required bool value}) {
                   ref
                       .read(vibrationProvider)
                       .impact(HapticFeedbackType.mediumImpact);
@@ -64,7 +64,7 @@ class SoundSettingPage extends HookConsumerWidget {
                       .update((state) => state = value);
                   ref
                       .read(sharedPreferenceUtilProvider)
-                      .setBool(SharedPreferenceKey.vibration, value);
+                      .setBool(SharedPreferenceKey.vibration, value: value);
                 },
               );
             },
@@ -131,7 +131,7 @@ class _SettingSwitchTile extends StatelessWidget {
 
   final String title;
   final bool value;
-  final Function(bool) onChanged;
+  final void Function({required bool value}) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +155,7 @@ class _SettingSwitchTile extends StatelessWidget {
         ),
         trailing: Switch(
           value: value,
-          onChanged: onChanged,
+          onChanged: (value) => onChanged(value: value),
           activeColor: AppColor.secondary,
         ),
       ),

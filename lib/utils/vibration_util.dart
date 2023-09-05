@@ -1,6 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+enum HapticFeedbackType {
+  lightImpact,
+  mediumImpact,
+  heavyImpact,
+}
+
 final vibrationEnabledProvider = StateProvider<bool>((_) => true);
 
 final vibrationProvider = Provider<VibrationUtil>(
@@ -24,10 +30,4 @@ class VibrationUtil {
       }
     }
   }
-}
-
-enum HapticFeedbackType {
-  lightImpact,
-  mediumImpact,
-  heavyImpact,
 }

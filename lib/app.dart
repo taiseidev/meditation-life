@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:meditation_life/gen/assets.gen.dart';
 import 'package:meditation_life/shared/main_page.dart';
+import 'package:meditation_life/shared/strings.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -13,8 +15,9 @@ class _AppState extends State<App> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // タブアイコンをキャッシュ
     precacheImage(
-      const AssetImage('assets/icons/meditation_icon.png'),
+      AssetImage(Assets.icons.meditationIcon.path),
       context,
     );
   }
@@ -23,7 +26,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Meditation Life',
+      title: Strings.appTitle,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       theme: ThemeData(

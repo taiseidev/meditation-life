@@ -69,7 +69,7 @@ class MeditationHistoryPage extends HookConsumerWidget {
                       ),
                     ),
                     Text(
-                      '/${histories.daysInMonth}日',
+                      '/${histories.daysInMonth(pageMonth.value)}日',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,

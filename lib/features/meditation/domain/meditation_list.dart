@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 
 class MeditationList {
@@ -21,12 +20,8 @@ class MeditationList {
   }
 
   // その月にどれくらいの日数が含まれているか
-  int get daysInMonth {
-    if (thisMonth == null) {
-      return 30;
-    }
-    final firstDate = DateFormat('y/M/d').parse(thisMonth!);
-    final lastDate = DateTime(firstDate.year, firstDate.month + 1, 0);
+  int daysInMonth(DateTime now) {
+    final lastDate = DateTime(now.year, now.month + 1, 0);
     return lastDate.day;
   }
 

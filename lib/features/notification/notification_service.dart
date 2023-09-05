@@ -73,7 +73,7 @@ class NotificationService {
   tz.TZDateTime _nextInstance() {
     final notificationTimeList =
         prefs.getStringList(SharedPreferenceKey.notificationTimeList) ??
-            ["08", "00"];
+            ['08', '00'];
 
     final hour = int.parse(notificationTimeList[0]);
     final minute = int.parse(notificationTimeList[1]);
@@ -82,7 +82,7 @@ class NotificationService {
     final now = tz.TZDateTime.now(tz.local);
 
     // 現在の日付の指定した時間を取得
-    tz.TZDateTime scheduledDate = tz.TZDateTime(
+    var scheduledDate = tz.TZDateTime(
       tz.local,
       now.year,
       now.month,
@@ -100,10 +100,8 @@ class NotificationService {
 
 // デバッグ用（5秒後に通知）
   // ignore: unused_element
-  tz.TZDateTime _fiveSecondsLater() {
-    var later = tz.TZDateTime.now(tz.local);
-
-    later = later.add(const Duration(seconds: 5));
-    return later;
-  }
+  tz.TZDateTime _fiveSecondsLater() => tz.TZDateTime.now(tz.local)
+    ..add(
+      const Duration(seconds: 5),
+    );
 }

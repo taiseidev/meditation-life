@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: avoid_implementing_value_types
 class CommonAppBar extends StatelessWidget implements PreferredSize {
   const CommonAppBar({
     super.key,

@@ -57,11 +57,12 @@ class NotificationPage extends HookConsumerWidget {
           _SettingsSwitchTile(
             title: Strings.notificationToggleLabel,
             value: isNotificationEnabled.value,
-            onChanged: (value) {
+            onChanged: ({required bool value}) {
               isNotificationEnabled.value = value;
-              ref
-                  .read(sharedPreferenceUtilProvider)
-                  .setBool(SharedPreferenceKey.isNotificationEnabled, value);
+              ref.read(sharedPreferenceUtilProvider).setBool(
+                    SharedPreferenceKey.isNotificationEnabled,
+                    value: value,
+                  );
             },
           ),
           _NotificationDateTile(
@@ -91,7 +92,7 @@ class _SettingsSwitchTile extends StatelessWidget {
   });
   final String title;
   final bool value;
-  final Function(bool) onChanged;
+  final void Function({required bool value}) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,7 @@ class _SettingsSwitchTile extends StatelessWidget {
         ),
         trailing: Switch(
           value: value,
-          onChanged: onChanged,
+          onChanged: (value) => onChanged(value: value),
           activeColor: AppColor.secondary,
         ),
       ),
@@ -132,7 +133,7 @@ class _NotificationDateTile extends StatelessWidget {
 
   final String title;
   final List<String> values;
-  final Function(Time) onChanged;
+  final void Function(Time) onChanged;
 
   int get hour => int.parse(values[0]);
   int get minute => int.parse(values[1]);

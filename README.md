@@ -1,5 +1,6 @@
+<img src="https://github.com/taiseidev/meditation-life/assets/91307335/8b00e572-3b6c-412a-861a-e0723070c547" width=500>
 
-![brandmark-design](https://github.com/taiseidev/meditation-life/assets/91307335/8b00e572-3b6c-412a-861a-e0723070c547)
+<br><br><br>
 
 # 瞑想ライフ
 毎日簡単に瞑想の記録をつけることができるアプリです。<br>

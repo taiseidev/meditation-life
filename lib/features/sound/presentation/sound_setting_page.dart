@@ -29,6 +29,7 @@ class SoundSettingPage extends HookConsumerWidget {
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(

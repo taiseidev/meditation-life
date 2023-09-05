@@ -18,7 +18,7 @@ class MainPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pages = <Widget>[
-      const MeditationHistoryPage(),
+      MeditationHistoryPage(),
       const SettingPage(),
       const MeditationPage(),
     ];

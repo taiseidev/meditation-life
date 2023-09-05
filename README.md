@@ -11,13 +11,6 @@
 ## インストール
 プロジェクトのインストール方法。
 
-```terminal
-bash
-Copy code
-git clone https://github.com/yourname/yourproject.git
-cd yourproject
-flutter pub get
-```
 
 ## プロジェクトの使い方。
 

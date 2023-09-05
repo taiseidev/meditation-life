@@ -15,6 +15,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/app_logo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/icons/app_logo.png');
 
+  /// File path: assets/icons/app_logo_android.png
+  AssetGenImage get appLogoAndroid =>
+      const AssetGenImage('assets/icons/app_logo_android.png');
+
   /// File path: assets/icons/meditation_icon.png
   AssetGenImage get meditationIcon =>
       const AssetGenImage('assets/icons/meditation_icon.png');

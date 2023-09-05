@@ -44,9 +44,9 @@ class MainPage extends ConsumerWidget {
         },
         backgroundColor: AppColor.secondary.withOpacity(0.6),
         shape: const CircleBorder(),
-        child: Image.asset(
-          Assets.icons.meditationIcon.path,
-          width: 20,
+        child: const Icon(
+          Icons.play_arrow_outlined,
+          color: Colors.white,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -54,7 +54,7 @@ class MainPage extends ConsumerWidget {
         backgroundColor: Colors.black,
         activeColor: Colors.white,
         inactiveColor: Colors.white.withOpacity(0.6),
-        icons: const [Icons.home, Icons.settings],
+        icons: const [Icons.home_outlined, Icons.settings_outlined],
         activeIndex: ref.watch(selectedIndexProvider),
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,

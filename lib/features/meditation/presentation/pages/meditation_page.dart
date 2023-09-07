@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_notifier.dart';
 import 'package:meditation_life/features/meditation/presentation/pages/meditation_detail_page.dart';
 import 'package:meditation_life/shared/extension/int_extension.dart';
+import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationPage extends ConsumerWidget {
   const MeditationPage({super.key});
@@ -11,6 +12,7 @@ class MeditationPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(meditationNotifierProvider);
+
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
@@ -65,7 +67,11 @@ class MeditationPage extends ConsumerWidget {
         error: (error, stackTrace) => const Center(
           child: Text('エラーが発生しました'),
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: CircularProgressIndicator(
+            color: AppColor.secondary,
+          ),
+        ),
       ),
     );
   }

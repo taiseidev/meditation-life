@@ -51,6 +51,9 @@ dependencies:
   path_provider: ^2.1.1
   shared_preferences: ^2.2.1
 
+  # Advertisement
+  google_mobile_ads: ^3.0.0
+
   # Other
   cached_network_image: ^3.2.3
   url_launcher: ^6.1.13

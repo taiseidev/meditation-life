@@ -10,7 +10,7 @@ import 'package:meditation_life/utils/vibration_util.dart';
 
 final selectedIndexProvider = StateProvider.autoDispose<int>((_) => 0);
 
-class MainPage extends ConsumerWidget {
+class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
 
   static const meditationPageIndex = 2;

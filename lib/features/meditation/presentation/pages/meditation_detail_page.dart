@@ -1,13 +1,36 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
+import 'package:meditation_life/utils/ad_mob_util.dart';
 
-class MeditationDetailView extends StatelessWidget {
+class MeditationDetailView extends StatefulWidget {
   const MeditationDetailView(this.meditation, {super.key});
   final Meditation meditation;
+
+  @override
+  State<MeditationDetailView> createState() => _MeditationDetailViewState();
+}
+
+class _MeditationDetailViewState extends State<MeditationDetailView> {
+  InterstitialAd? _interstitialAd;
+  final adInterstitial = AdInterstitialService();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    adInterstitial.create();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _interstitialAd?.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +46,7 @@ class MeditationDetailView extends StatelessWidget {
           ),
         ),
         title: Text(
-          meditation.title,
+          widget.meditation.title,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -31,48 +54,80 @@ class MeditationDetailView extends StatelessWidget {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Hero(
-              tag: meditation.id,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: CachedNetworkImage(
-                  imageUrl: meditation.thumbnailUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MeditationPlayScreen(meditation),
-                ),
-              ),
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColor.secondary,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  Strings.meditationStartButtonLabel,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Hero(
+                  tag: widget.meditation.id,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.meditation.thumbnailUrl,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                InkWell(
+                  onTap: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await Future<void>.delayed(const Duration(seconds: 1));
+                    await adInterstitial.show();
+                    setState(() {
+                      isLoading = false;
+                    });
+                    if (context.mounted) {
+                      await Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              MeditationPlayScreen(widget.meditation),
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColor.secondary,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      Strings.meditationStartButtonLabel,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          if (isLoading)
+            Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.grey.withOpacity(0.2),
+                  ),
+                ),
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: AppColor.secondary,
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }

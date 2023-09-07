@@ -12,18 +12,21 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final imagePaths = [
+    Assets.icons.meditationIcon.path,
+    Assets.icons.appLogo.path,
+  ];
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // タブアイコンをキャッシュ
-    precacheImage(
-      AssetImage(Assets.icons.meditationIcon.path),
-      context,
-    );
-    precacheImage(
-      AssetImage(Assets.icons.appLogo.path),
-      context,
-    );
+    for (final path in imagePaths) {
+      // アプリ内で使用する画像をキャッシュ
+      precacheImage(
+        AssetImage(path),
+        context,
+      );
+    }
   }
 
   @override
@@ -36,7 +39,7 @@ class _AppState extends State<App> {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const MainPage(),
+      home: MainPage(),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:isar/isar.dart';
@@ -41,11 +42,14 @@ Future<void> main() async {
   // timezoneパッケージの初期化処理
   timezone.initializeTimeZones();
 
-  // intlパッケージのDateFormatを初期化
-  await initializeDateFormatting();
-
-  // Firebaseの初期化処理
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Future.wait([
+    // Firebaseの初期化処理
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    // intlパッケージのDateFormatを初期化
+    initializeDateFormatting(),
+    // AdMobの初期化
+    MobileAds.instance.initialize(),
+  ]);
 
   // 各パッケージのインスタンスを作成
   final (packageInfo, prefs, isar) = await initializeAppResources();

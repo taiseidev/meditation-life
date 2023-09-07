@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
 import 'package:meditation_life/shared/extension/int_extension.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
+import 'package:meditation_life/utils/ad_mob_util.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -15,13 +17,19 @@ class MeditationHistoryPage extends HookConsumerWidget {
 
   tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
+  final adBanner = AdBannerService();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(meditationHistoryNotifierProvider);
-
     final focusedDay = useState(now);
     final selectedDay = useState<DateTime>(now);
     final pageMonth = useState<DateTime>(now);
+
+    useEffect(() {
+      adBanner.create();
+      return null;
+    });
 
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.95),
@@ -39,6 +47,18 @@ class MeditationHistoryPage extends HookConsumerWidget {
         skipLoadingOnReload: false,
         data: (histories) => CustomScrollView(
           slivers: [
+            SliverToBoxAdapter(
+              child: adBanner.bannerAd != null
+                  ? Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: adBanner.bannerAd!.size.width.toDouble(),
+                        height: adBanner.bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: adBanner.bannerAd!),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding:
@@ -182,15 +202,6 @@ class MeditationHistoryPage extends HookConsumerWidget {
                 final item = histories.getMeditationHistoryForDate(
                   selectedDay.value,
                 )[index];
-
-                print(
-                  histories
-                      .getMeditationHistoryForDate(
-                        selectedDay.value,
-                      )
-                      .length,
-                );
-
                 return ListTile(
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
@@ -223,7 +234,9 @@ class MeditationHistoryPage extends HookConsumerWidget {
           child: Text(error.toString()),
         ),
         loading: () => const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: AppColor.secondary,
+          ),
         ),
       ),
     );

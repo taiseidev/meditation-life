@@ -54,6 +54,24 @@ class SettingPage extends StatelessWidget {
             title: Strings.contactLabel,
             callback: () => _launchUrl(Strings.contactUrl),
           ),
+          Stack(
+            children: [
+              _SettingsTile(
+                title: '広告非表示',
+                callback: () {},
+              ),
+              Positioned.fill(
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.grey.withOpacity(0.3),
+                  child: const Text(
+                    'Coming Soon...',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 24),
             child: Align(

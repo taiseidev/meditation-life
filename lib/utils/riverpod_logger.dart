@@ -8,11 +8,7 @@ class RiverpodLogger extends ProviderObserver {
     Object? value,
     ProviderContainer container,
   ) {
-    debugPrint('''
-{
-  "PROVIDER": "${provider.name ?? provider.runtimeType}"
-  "ADD": "$value"
-}''');
+    debugPrint('PROVIDER${provider.name ?? provider.runtimeType}');
   }
 
   @override
@@ -22,11 +18,7 @@ class RiverpodLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    debugPrint('''
-{
-  "PROVIDER": "${provider.name ?? provider.runtimeType}",
-  "UPDATE": "$newValue"
-}''');
+    debugPrint('PROVIDER${provider.name ?? provider.runtimeType}');
   }
 
   @override
@@ -34,10 +26,6 @@ class RiverpodLogger extends ProviderObserver {
     ProviderBase<Object?> provider,
     ProviderContainer container,
   ) {
-    debugPrint('''
-{
-  "PROVIDER": "${provider.name ?? provider.runtimeType}",
-  "DISPOSE!!"
-}''');
+    debugPrint('PROVIDER${provider.name ?? provider.runtimeType}');
   }
 }

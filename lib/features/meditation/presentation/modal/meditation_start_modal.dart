@@ -40,7 +40,7 @@ class MeditationStartModal extends StatelessWidget {
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<void>(
                     builder: (context) => MeditationPlayScreen(
                       meditation,
                     ),

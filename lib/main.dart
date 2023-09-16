@@ -74,7 +74,7 @@ Future<void> main() async {
   await Future.wait([
     // 通知に関する設定
     container.read(notificationServiceProvider).notificationSettings(),
-    // Firebaseに関する
+    // Firebaseに関する設定
     _setUpUser(container),
   ]);
 

@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/timezone.dart';
 
 final notificationServiceProvider = Provider<NotificationService>(
   (ref) => NotificationService(
@@ -43,19 +45,23 @@ class NotificationService {
     }
   }
 
-  bool? _shouldSendNotification() =>
-      prefs.getBool(SharedPreferenceKey.isNotificationEnabled);
+  bool _shouldSendNotification() =>
+      prefs.getBool(SharedPreferenceKey.isNotificationEnabled) ?? true;
 
   Future<void> _scheduleDailyNotification() async {
-    if (_shouldSendNotification() == null || !_shouldSendNotification()!) {
+    if (!_shouldSendNotification()) {
       return;
     }
+
+    final timezone = _nextInstance(
+      tz.getLocation(await FlutterTimezone.getLocalTimezone()),
+    );
 
     await localNotificationsPlugin.zonedSchedule(
       0,
       Strings.appTitle,
       Strings.notificationMessage,
-      _nextInstance(),
+      timezone,
       const NotificationDetails(
         android: AndroidNotificationDetails(
           '',
@@ -70,7 +76,7 @@ class NotificationService {
   }
 
 // 1回目に通知を飛ばす時間の作成
-  tz.TZDateTime _nextInstance() {
+  tz.TZDateTime _nextInstance(Location region) {
     final notificationTimeList =
         prefs.getStringList(SharedPreferenceKey.notificationTimeList) ??
             ['08', '00'];
@@ -79,11 +85,11 @@ class NotificationService {
     final minute = int.parse(notificationTimeList[1]);
 
     // 現在のローカル時間を取得
-    final now = tz.TZDateTime.now(tz.local);
+    final now = tz.TZDateTime.now(region);
 
     // 現在の日付の指定した時間を取得
     var scheduledDate = tz.TZDateTime(
-      tz.local,
+      region,
       now.year,
       now.month,
       now.day,
@@ -91,6 +97,8 @@ class NotificationService {
       minute,
     );
 
+    // スケジュールされた時刻が現在時刻よりも過去の場合
+    // 明日に通知設定
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
@@ -100,8 +108,8 @@ class NotificationService {
 
 // デバッグ用（5秒後に通知）
   // ignore: unused_element
-  tz.TZDateTime _fiveSecondsLater() => tz.TZDateTime.now(tz.local)
-    ..add(
-      const Duration(seconds: 5),
-    );
+  tz.TZDateTime _fiveSecondsLater(Location region) =>
+      tz.TZDateTime.now(region).add(
+        const Duration(seconds: 5),
+      );
 }

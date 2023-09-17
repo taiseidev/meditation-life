@@ -2,23 +2,32 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/timezone.dart';
 
+final localTimeZoneProvider = Provider<String>(
+  (_) => throw UnimplementedError(),
+);
+
 final notificationServiceProvider = Provider<NotificationService>(
   (ref) => NotificationService(
+    ref.read(localTimeZoneProvider),
     ref.read(sharedPreferenceUtilProvider),
     FlutterLocalNotificationsPlugin(),
   ),
 );
 
 class NotificationService {
-  NotificationService(this.prefs, this.localNotificationsPlugin);
+  NotificationService(
+    this._currentTimeZone,
+    this.prefs,
+    this.localNotificationsPlugin,
+  );
 
+  final String _currentTimeZone;
   final SharePreferenceUtil prefs;
   final FlutterLocalNotificationsPlugin localNotificationsPlugin;
 
@@ -53,9 +62,7 @@ class NotificationService {
       return;
     }
 
-    final timezone = _nextInstance(
-      tz.getLocation(await FlutterTimezone.getLocalTimezone()),
-    );
+    final timezone = _nextInstance(tz.getLocation(_currentTimeZone));
 
     await localNotificationsPlugin.zonedSchedule(
       0,

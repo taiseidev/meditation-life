@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -51,6 +52,9 @@ Future<void> main() async {
     MobileAds.instance.initialize(),
   ]);
 
+  // ローカルのtimezone情報を取得
+  final currentTimeZone = await FlutterTimezone.getLocalTimezone();
+
   // 各パッケージのインスタンスを作成
   final (packageInfo, prefs, isar) = await initializeAppResources();
 
@@ -65,6 +69,7 @@ Future<void> main() async {
       packageInfoProvider.overrideWithValue(packageInfo),
       sharedPreferenceProvider.overrideWithValue(prefs),
       localDbProvider.overrideWithValue(isar),
+      localTimeZoneProvider.overrideWithValue(currentTimeZone),
     ],
     observers: [
       RiverpodLogger(),

@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
+import 'package:meditation_life/features/notification/notification_service.dart';
 import 'package:meditation_life/shared/extension/int_extension.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
@@ -15,12 +16,15 @@ import 'package:timezone/timezone.dart' as tz;
 class MeditationHistoryPage extends HookConsumerWidget {
   MeditationHistoryPage({super.key});
 
-  tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-
   final adBanner = AdBannerService();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final now = tz.TZDateTime.now(
+      tz.getLocation(
+        ref.read(localTimeZoneProvider),
+      ),
+    );
     final state = ref.watch(meditationHistoryNotifierProvider);
     final focusedDay = useState(now);
     final selectedDay = useState<DateTime>(now);
@@ -166,11 +170,17 @@ class MeditationHistoryPage extends HookConsumerWidget {
                   },
                   onDaySelected: (selectDay, focusDay) {
                     selectedDay.value = selectDay;
-                    focusedDay.value = tz.TZDateTime.from(focusDay, tz.local);
+                    focusedDay.value = tz.TZDateTime.from(
+                      focusDay,
+                      tz.getLocation(ref.read(localTimeZoneProvider)),
+                    );
                   },
                   onPageChanged: (focusDay) {
                     pageMonth.value = focusDay;
-                    focusedDay.value = tz.TZDateTime.from(focusDay, tz.local);
+                    focusedDay.value = tz.TZDateTime.from(
+                      focusDay,
+                      tz.getLocation(ref.read(localTimeZoneProvider)),
+                    );
                     ref
                         .read(meditationHistoryNotifierProvider.notifier)
                         .fetchMeditationListPerMonth(focusDay);

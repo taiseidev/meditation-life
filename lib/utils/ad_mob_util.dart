@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:meditation_life/utils/flavor.dart';
 
 String _getAdUnitId({
   required String androidId,
@@ -25,15 +24,17 @@ class AdBannerService {
   BannerAd? _bannerAd;
   BannerAd? get bannerAd => _bannerAd;
 
-  final _bannerAdUnitId = Flavor.environment == FlavorType.dev
-      ? _getAdUnitId(
-          androidId: 'ca-app-pub-3940256099942544/6300978111',
-          iosId: 'ca-app-pub-3940256099942544/2934735716',
-        )
-      : _getAdUnitId(
-          androidId: 'ca-app-pub-5636285754013517/4778022335',
-          iosId: 'ca-app-pub-5636285754013517/3286892985',
-        );
+  final _bannerAdUnitId =
+      //  Flavor.environment == FlavorType.dev
+      //     ? _getAdUnitId(
+      //         androidId: 'ca-app-pub-3940256099942544/6300978111',
+      //         iosId: 'ca-app-pub-3940256099942544/2934735716',
+      //       )
+      //     :
+      _getAdUnitId(
+    androidId: 'ca-app-pub-5636285754013517/4778022335',
+    iosId: 'ca-app-pub-5636285754013517/3286892985',
+  );
 
   void create() => BannerAd(
         adUnitId: _bannerAdUnitId,
@@ -58,15 +59,17 @@ class AdBannerService {
 class AdInterstitialService {
   InterstitialAd? _interstitialAd;
 
-  final _interstitialAdUnitId = Flavor.environment == FlavorType.dev
-      ? _getAdUnitId(
-          androidId: 'ca-app-pub-3940256099942544/1033173712',
-          iosId: 'ca-app-pub-3940256099942544/4411468910',
-        )
-      : _getAdUnitId(
-          androidId: 'ca-app-pub-5636285754013517/4603882073',
-          iosId: 'ca-app-pub-5636285754013517/1674466408',
-        );
+  final _interstitialAdUnitId =
+      //  Flavor.environment == FlavorType.dev
+      //     ? _getAdUnitId(
+      //         androidId: 'ca-app-pub-3940256099942544/1033173712',
+      //         iosId: 'ca-app-pub-3940256099942544/4411468910',
+      //       )
+      //     :
+      _getAdUnitId(
+    androidId: 'ca-app-pub-5636285754013517/4603882073',
+    iosId: 'ca-app-pub-5636285754013517/1674466408',
+  );
 
   void create() => InterstitialAd.load(
         adUnitId: _interstitialAdUnitId,

@@ -79,6 +79,8 @@ class NotificationService {
       ),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      // 毎日通知を送信する様に設定
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 

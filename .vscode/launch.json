@@ -10,6 +10,7 @@
                                                             "args": [
                                                                                 "--debug",
                                                                                 "--dart-define=FLAVOR=dev",
+                                                                                "--verbose",
                                                             ]
                                         },
                                         {
@@ -21,6 +22,7 @@
                                                             "args": [
                                                                                 "--release",
                                                                                 "--dart-define=FLAVOR=prod",
+                                                                                "--verbose"
                                                             ]
                                         },
                     ]

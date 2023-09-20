@@ -55,4 +55,4 @@ windows
 .fvm/flutter_sdk
 
 # firebase
-/lib/firebase_options.dart
+# /lib/firebase_options.dart

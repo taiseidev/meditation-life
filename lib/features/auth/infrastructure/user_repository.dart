@@ -16,11 +16,15 @@ class UserRepository {
 
   static const _collection = 'users';
   static const _id = 'id';
+  static const _createdAt = 'createdAt';
 
   Future<void> createUser() async {
     final auth = _authRepository.authUser;
     await _db.collection(_collection).doc(auth!.uid).set(
-      <String, dynamic>{_id: auth.uid},
+      <String, dynamic>{
+        _id: auth.uid,
+        _createdAt: Timestamp.now(),
+      },
     );
   }
 }

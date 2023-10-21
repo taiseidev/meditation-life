@@ -5,7 +5,7 @@ import 'package:meditation_life/features/sound/presentation/sound_setting_page.d
 import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/shared/widgets/common_app_bar.dart';
 import 'package:meditation_life/utils/package_info_util.dart';
-import 'package:meditation_life/utils/vibration_util.dart';
+import 'package:meditation_life/utils/vibration_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
@@ -115,7 +115,7 @@ class _SettingsTile extends ConsumerWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
-          vertical: 10,
+          vertical: 8,
         ),
         title: Text(
           title,
@@ -128,7 +128,7 @@ class _SettingsTile extends ConsumerWidget {
           Icons.chevron_right,
         ),
         onTap: () {
-          ref.read(vibrationProvider).impact(HapticFeedbackType.lightImpact);
+          ref.read(vibrationUtilProvider).hapticFeedback();
           callback();
         },
       ),

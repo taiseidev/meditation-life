@@ -98,11 +98,11 @@ class _$MeditationCopyWithImpl<$Res, $Val extends Meditation>
 }
 
 /// @nodoc
-abstract class _$$_MeditationCopyWith<$Res>
+abstract class _$$MeditationImplCopyWith<$Res>
     implements $MeditationCopyWith<$Res> {
-  factory _$$_MeditationCopyWith(
-          _$_Meditation value, $Res Function(_$_Meditation) then) =
-      __$$_MeditationCopyWithImpl<$Res>;
+  factory _$$MeditationImplCopyWith(
+          _$MeditationImpl value, $Res Function(_$MeditationImpl) then) =
+      __$$MeditationImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -115,11 +115,11 @@ abstract class _$$_MeditationCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MeditationCopyWithImpl<$Res>
-    extends _$MeditationCopyWithImpl<$Res, _$_Meditation>
-    implements _$$_MeditationCopyWith<$Res> {
-  __$$_MeditationCopyWithImpl(
-      _$_Meditation _value, $Res Function(_$_Meditation) _then)
+class __$$MeditationImplCopyWithImpl<$Res>
+    extends _$MeditationCopyWithImpl<$Res, _$MeditationImpl>
+    implements _$$MeditationImplCopyWith<$Res> {
+  __$$MeditationImplCopyWithImpl(
+      _$MeditationImpl _value, $Res Function(_$MeditationImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -132,7 +132,7 @@ class __$$_MeditationCopyWithImpl<$Res>
     Object? audioUrl = null,
     Object? date = freezed,
   }) {
-    return _then(_$_Meditation(
+    return _then(_$MeditationImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -163,8 +163,8 @@ class __$$_MeditationCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Meditation implements _Meditation {
-  _$_Meditation(
+class _$MeditationImpl implements _Meditation {
+  _$MeditationImpl(
       {required this.id,
       required this.title,
       required this.duration,
@@ -172,8 +172,8 @@ class _$_Meditation implements _Meditation {
       required this.audioUrl,
       this.date});
 
-  factory _$_Meditation.fromJson(Map<String, dynamic> json) =>
-      _$$_MeditationFromJson(json);
+  factory _$MeditationImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MeditationImplFromJson(json);
 
   @override
   final String id;
@@ -197,7 +197,7 @@ class _$_Meditation implements _Meditation {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Meditation &&
+            other is _$MeditationImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.duration, duration) ||
@@ -217,12 +217,12 @@ class _$_Meditation implements _Meditation {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MeditationCopyWith<_$_Meditation> get copyWith =>
-      __$$_MeditationCopyWithImpl<_$_Meditation>(this, _$identity);
+  _$$MeditationImplCopyWith<_$MeditationImpl> get copyWith =>
+      __$$MeditationImplCopyWithImpl<_$MeditationImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MeditationToJson(
+    return _$$MeditationImplToJson(
       this,
     );
   }
@@ -235,10 +235,10 @@ abstract class _Meditation implements Meditation {
       required final int duration,
       required final String thumbnailUrl,
       required final String audioUrl,
-      final DateTime? date}) = _$_Meditation;
+      final DateTime? date}) = _$MeditationImpl;
 
   factory _Meditation.fromJson(Map<String, dynamic> json) =
-      _$_Meditation.fromJson;
+      _$MeditationImpl.fromJson;
 
   @override
   String get id;
@@ -254,6 +254,6 @@ abstract class _Meditation implements Meditation {
   DateTime? get date;
   @override
   @JsonKey(ignore: true)
-  _$$_MeditationCopyWith<_$_Meditation> get copyWith =>
+  _$$MeditationImplCopyWith<_$MeditationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

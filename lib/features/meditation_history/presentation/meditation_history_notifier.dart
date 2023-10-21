@@ -9,9 +9,6 @@ final meditationHistoryNotifierProvider =
   MeditationHistoryNotifier.new,
 );
 
-// メモ
-// AsyncNotifier内部的にstateをAsyncValueでラップしている
-// copyWithPreviousを利用することで前の状態を維持することができる
 class MeditationHistoryNotifier extends AsyncNotifier<MeditationList> {
   @override
   FutureOr<MeditationList> build() async {

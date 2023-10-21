@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
-import 'package:meditation_life/utils/vibration_util.dart';
+import 'package:meditation_life/utils/vibration_utils.dart';
 
 // TODO(taisei): 全体的にリファクタ
 class SoundSettingPage extends HookConsumerWidget {
@@ -16,13 +16,11 @@ class SoundSettingPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       Future(() async {
-        final vibrationEnabled = ref
+        final isEnabled = ref
                 .read(sharedPreferenceUtilProvider)
                 .getBool(SharedPreferenceKey.vibration) ??
             defaultVibrationFlag;
-        ref
-            .read(vibrationEnabledProvider.notifier)
-            .update((state) => state = vibrationEnabled);
+        ref.read(vibrationStateProvider.notifier).toggle(isEnabled: isEnabled);
       });
 
       return null;
@@ -55,14 +53,12 @@ class SoundSettingPage extends HookConsumerWidget {
             builder: (context, ref, child) {
               return _SettingSwitchTile(
                 title: Strings.vibrationLabel,
-                value: ref.watch(vibrationEnabledProvider),
+                value: ref.watch(vibrationStateProvider),
                 onChanged: ({required bool value}) {
+                  ref.read(vibrationUtilProvider).hapticFeedback();
                   ref
-                      .read(vibrationProvider)
-                      .impact(HapticFeedbackType.mediumImpact);
-                  ref
-                      .read(vibrationEnabledProvider.notifier)
-                      .update((state) => state = value);
+                      .read(vibrationStateProvider.notifier)
+                      .toggle(isEnabled: value);
                   ref
                       .read(sharedPreferenceUtilProvider)
                       .setBool(SharedPreferenceKey.vibration, value: value);
@@ -105,9 +101,7 @@ class _SliderTile extends HookConsumerWidget {
           Slider(
             value: volume.value,
             onChanged: (value) {
-              ref
-                  .read(vibrationProvider)
-                  .impact(HapticFeedbackType.lightImpact);
+              ref.read(vibrationUtilProvider).hapticFeedback();
               volume.value = value;
             },
             onChangeEnd: (value) {

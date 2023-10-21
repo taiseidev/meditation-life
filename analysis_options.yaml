@@ -7,3 +7,4 @@ analyzer:
     - "**/firebase_options.dart"
   errors:
         sort_pub_dependencies: false
+        use_setters_to_change_properties: false

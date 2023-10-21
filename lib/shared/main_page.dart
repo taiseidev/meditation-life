@@ -6,7 +6,7 @@ import 'package:meditation_life/features/meditation_history/presentation/meditat
 import 'package:meditation_life/features/setting/presentation/setting_page.dart';
 import 'package:meditation_life/gen/assets.gen.dart';
 import 'package:meditation_life/shared/res/color.dart';
-import 'package:meditation_life/utils/vibration_util.dart';
+import 'package:meditation_life/utils/vibration_utils.dart';
 
 final selectedIndexProvider = StateProvider.autoDispose<int>((_) => 0);
 
@@ -37,7 +37,7 @@ class MainPage extends HookConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(vibrationProvider).impact(HapticFeedbackType.mediumImpact);
+          ref.read(vibrationUtilProvider).hapticFeedback();
           ref
               .read(selectedIndexProvider.notifier)
               .update((state) => state = meditationPageIndex);
@@ -61,7 +61,7 @@ class MainPage extends HookConsumerWidget {
         leftCornerRadius: 32,
         rightCornerRadius: 32,
         onTap: (index) {
-          ref.read(vibrationProvider).impact(HapticFeedbackType.mediumImpact);
+          ref.read(vibrationUtilProvider).hapticFeedback();
           ref
               .read(selectedIndexProvider.notifier)
               .update((state) => state = index);

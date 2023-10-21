@@ -6,8 +6,8 @@ part of 'meditation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Meditation _$$_MeditationFromJson(Map<String, dynamic> json) =>
-    _$_Meditation(
+_$MeditationImpl _$$MeditationImplFromJson(Map<String, dynamic> json) =>
+    _$MeditationImpl(
       id: json['id'] as String,
       title: json['title'] as String,
       duration: json['duration'] as int,
@@ -17,7 +17,7 @@ _$_Meditation _$$_MeditationFromJson(Map<String, dynamic> json) =>
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
     );
 
-Map<String, dynamic> _$$_MeditationToJson(_$_Meditation instance) =>
+Map<String, dynamic> _$$MeditationImplToJson(_$MeditationImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

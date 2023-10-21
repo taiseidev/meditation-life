@@ -1,21 +1,19 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-final packageInfoProvider = Provider<PackageInfo>(
-  (ref) => throw UnimplementedError(),
-);
+class PackageInfoInstance {
+  factory PackageInfoInstance() => _instance;
+  PackageInfoInstance._internal();
+  static final PackageInfoInstance _instance = PackageInfoInstance._internal();
 
-final packageInfoUtilProvider = Provider<PackageInfoUtil>(
-  (ref) => PackageInfoUtil(ref.read(packageInfoProvider)),
-);
+  static late final PackageInfo _packageInfo;
 
-class PackageInfoUtil {
-  PackageInfoUtil(this._packageInfo);
-  final PackageInfo _packageInfo;
+  static Future<void> init() async {
+    _packageInfo = await PackageInfo.fromPlatform();
+  }
 
-  String get appName => _packageInfo.appName;
-  String get version => _packageInfo.version;
-  String get buildNumber => _packageInfo.buildNumber;
-  String get packageName => _packageInfo.packageName;
-  String get buildSignature => _packageInfo.buildSignature;
+  static String get appName => _packageInfo.appName;
+  static String get version => _packageInfo.version;
+  static String get buildNumber => _packageInfo.buildNumber;
+  static String get packageName => _packageInfo.packageName;
+  static String get buildSignature => _packageInfo.buildSignature;
 }

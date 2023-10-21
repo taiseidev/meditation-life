@@ -40,6 +40,8 @@ Future<void> main() async {
   // アプリの初期化処理
   WidgetsFlutterBinding.ensureInitialized();
 
+  await PackageInfoInstance.init();
+
   // timezoneパッケージの初期化処理
   timezone.initializeTimeZones();
 
@@ -56,7 +58,7 @@ Future<void> main() async {
   final currentTimeZone = await FlutterTimezone.getLocalTimezone();
 
   // 各パッケージのインスタンスを作成
-  final (packageInfo, prefs, isar) = await initializeAppResources();
+  final (prefs, isar) = await initializeAppResources();
 
   final container = ProviderContainer(
     overrides: [
@@ -66,7 +68,6 @@ Future<void> main() async {
       meditationHistoryRepositoryProvider.overrideWith(
         (_) => FirebaseMeditationHistoryRepository(FirebaseFirestore.instance),
       ),
-      packageInfoProvider.overrideWithValue(packageInfo),
       sharedPreferenceProvider.overrideWithValue(prefs),
       localDbProvider.overrideWithValue(isar),
       localTimeZoneProvider.overrideWithValue(currentTimeZone),
@@ -100,7 +101,7 @@ Future<String> _getApplicationSupportPath() async {
   return dir.path;
 }
 
-Future<(PackageInfo, SharedPreferences, Isar)> initializeAppResources() async {
+Future<(SharedPreferences, Isar)> initializeAppResources() async {
   final results = await Future.wait([
     PackageInfo.fromPlatform(),
     SharedPreferences.getInstance(),
@@ -108,7 +109,6 @@ Future<(PackageInfo, SharedPreferences, Isar)> initializeAppResources() async {
   ]);
 
   return (
-    results[0] as PackageInfo,
     results[1] as SharedPreferences,
     results[2] as Isar,
   );

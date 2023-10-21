@@ -78,7 +78,7 @@ class SettingPage extends StatelessWidget {
               child: Consumer(
                 builder: (context, ref, child) => Text(
                   Strings.appVersion(
-                    ref.read(packageInfoUtilProvider).version,
+                    PackageInfoInstance.version,
                   ),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,

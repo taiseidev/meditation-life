@@ -2,12 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 
 class MeditationDto {
-  final String id;
-  final String title;
-  final int duration;
-  final String thumbnailUrl;
-  final String audioUrl;
-
   MeditationDto({
     required this.id,
     required this.title,
@@ -17,7 +11,7 @@ class MeditationDto {
   });
 
   factory MeditationDto.fromDocument(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data()! as Map<String, dynamic>;
     return MeditationDto(
       id: doc.id,
       title: data['title'] as String,
@@ -26,6 +20,11 @@ class MeditationDto {
       audioUrl: data['audioUrl'] as String,
     );
   }
+  final String id;
+  final String title;
+  final int duration;
+  final String thumbnailUrl;
+  final String audioUrl;
 
   Meditation toDomain() {
     return Meditation(

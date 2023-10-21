@@ -12,7 +12,7 @@ import 'package:meditation_life/utils/ad_mob_util.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-// TODO: 全体的にリファクタ
+// TODO(taisei): 全体的にリファクタ
 class MeditationHistoryPage extends HookConsumerWidget {
   MeditationHistoryPage({super.key});
 
@@ -260,7 +260,7 @@ class _Events extends StatelessWidget {
   );
 
   final DateTime date;
-  final List events;
+  final List<dynamic> events;
 
   @override
   Widget build(BuildContext context) {

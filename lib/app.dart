@@ -39,7 +39,7 @@ class _AppState extends State<App> {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MainPage(),
+      home: const MainPage(),
     );
   }
 }

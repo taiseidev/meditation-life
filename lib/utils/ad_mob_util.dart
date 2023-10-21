@@ -19,8 +19,6 @@ String _getAdUnitId({
 // バナー広告を管理
 class AdBannerService {
   AdBannerService();
-  AdBannerService._();
-
   BannerAd? _bannerAd;
   BannerAd? get bannerAd => _bannerAd;
 

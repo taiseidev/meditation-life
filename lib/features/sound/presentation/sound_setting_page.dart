@@ -6,7 +6,7 @@ import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:meditation_life/utils/vibration_util.dart';
 
-// TODO: 全体的にリファクタ
+// TODO(taisei): 全体的にリファクタ
 class SoundSettingPage extends HookConsumerWidget {
   const SoundSettingPage({super.key});
 

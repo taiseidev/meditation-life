@@ -10,7 +10,8 @@ class Flavor {
     const flavor = String.fromEnvironment('FLAVOR');
     if (flavor == 'dev') {
       return FlavorType.dev;
-    } else if (flavor == 'prod') {
+    }
+    if (flavor == 'prod') {
       return FlavorType.prod;
     }
     throw AssertionError('No support flavor');

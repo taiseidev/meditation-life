@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RiverpodLogger extends ProviderObserver {
-  const RiverpodLogger._();
-
   @override
   void didAddProvider(
     ProviderBase<Object?> provider,

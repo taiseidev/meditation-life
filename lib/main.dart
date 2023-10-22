@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -17,6 +16,7 @@ import 'package:meditation_life/features/meditation_history/infrastructure/repos
 import 'package:meditation_life/features/notification/notification_service.dart';
 import 'package:meditation_life/features/sound/domain/entities/sound.dart';
 import 'package:meditation_life/firebase_options.dart';
+import 'package:meditation_life/utils/local_time_zone_util.dart';
 import 'package:meditation_life/utils/package_info_util.dart';
 import 'package:meditation_life/utils/riverpod_logger.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
@@ -41,6 +41,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await PackageInfoInstance.init();
+  await LocalTimeZoneUtil.init();
 
   // timezoneパッケージの初期化処理
   timezone.initializeTimeZones();
@@ -53,9 +54,6 @@ Future<void> main() async {
     // AdMobの初期化
     MobileAds.instance.initialize(),
   ]);
-
-  // ローカルのtimezone情報を取得
-  final currentTimeZone = await FlutterTimezone.getLocalTimezone();
 
   // 各パッケージのインスタンスを作成
   final (prefs, isar) = await initializeAppResources();
@@ -70,7 +68,6 @@ Future<void> main() async {
       ),
       sharedPreferenceProvider.overrideWithValue(prefs),
       localDbProvider.overrideWithValue(isar),
-      localTimeZoneProvider.overrideWithValue(currentTimeZone),
     ],
     observers: [
       RiverpodLogger(),

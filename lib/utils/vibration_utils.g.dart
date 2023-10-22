@@ -6,7 +6,7 @@ part of 'vibration_utils.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$vibrationUtilHash() => r'8ed45167d6156a329f24091cfb4f676e2297ce40';
+String _$vibrationUtilHash() => r'c56b6c99de7498990475b23a2fc6221d1fe6cc5c';
 
 /// See also [vibrationUtil].
 @ProviderFor(vibrationUtil)

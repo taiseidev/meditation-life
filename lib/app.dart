@@ -21,7 +21,6 @@ class _AppState extends State<App> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     for (final path in imagePaths) {
-      // アプリ内で使用する画像をキャッシュ
       precacheImage(
         AssetImage(path),
         context,
@@ -37,6 +36,15 @@ class _AppState extends State<App> {
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 18,
+          ),
+        ),
         useMaterial3: true,
       ),
       home: const MainPage(),

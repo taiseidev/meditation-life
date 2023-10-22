@@ -1,15 +1,13 @@
 import 'dart:async';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/features/meditation/domain/meditation_list.dart';
 import 'package:meditation_life/features/meditation_history/domain/usecase/meditation_history_usecase.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final meditationHistoryNotifierProvider =
-    AsyncNotifierProvider<MeditationHistoryNotifier, MeditationList>(
-  MeditationHistoryNotifier.new,
-);
+part 'meditation_history_notifier.g.dart';
 
-class MeditationHistoryNotifier extends AsyncNotifier<MeditationList> {
+@riverpod
+class MeditationHistoryNotifier extends _$MeditationHistoryNotifier {
   @override
   FutureOr<MeditationList> build() async {
     final now = DateTime.now();

@@ -4,17 +4,14 @@ import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/shared/strings.dart';
+import 'package:meditation_life/utils/local_time_zone_util.dart';
 import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/timezone.dart';
 
-final localTimeZoneProvider = Provider<String>(
-  (_) => throw UnimplementedError(),
-);
-
 final notificationServiceProvider = Provider<NotificationService>(
   (ref) => NotificationService(
-    ref.read(localTimeZoneProvider),
+    LocalTimeZoneUtil.localTimeZone,
     ref.read(sharedPreferenceUtilProvider),
     FlutterLocalNotificationsPlugin(),
   ),

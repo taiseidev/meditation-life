@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
-import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:meditation_life/utils/vibration_utils.dart';
 
 // TODO(taisei): 全体的にリファクタ
@@ -15,14 +15,8 @@ class SoundSettingPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      Future(() async {
-        final isEnabled = ref
-                .read(sharedPreferenceUtilProvider)
-                .getBool(SharedPreferenceKey.vibration) ??
-            defaultVibrationFlag;
-        ref.read(vibrationStateProvider.notifier).toggle(isEnabled: isEnabled);
-      });
-
+      final isEnabled = PreferenceKeyType.vibration.getBool();
+      ref.read(vibrationStateProvider.notifier).toggle(isEnabled: isEnabled);
       return null;
     });
 
@@ -59,9 +53,7 @@ class SoundSettingPage extends HookConsumerWidget {
                   ref
                       .read(vibrationStateProvider.notifier)
                       .toggle(isEnabled: value);
-                  ref
-                      .read(sharedPreferenceUtilProvider)
-                      .setBool(SharedPreferenceKey.vibration, value: value);
+                  PreferenceKeyType.vibration.setBool(setBool: value);
                 },
               );
             },
@@ -75,15 +67,10 @@ class SoundSettingPage extends HookConsumerWidget {
 class _SliderTile extends HookConsumerWidget {
   const _SliderTile();
 
-  static const defaultVolume = 1.0;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final volume = useState<double>(
-      ref
-              .read(sharedPreferenceUtilProvider)
-              .getDouble(SharedPreferenceKey.volume) ??
-          defaultVolume,
+      PreferenceKeyType.volume.getDouble(),
     );
 
     return ListTile(
@@ -104,11 +91,7 @@ class _SliderTile extends HookConsumerWidget {
               ref.read(vibrationUtilProvider).hapticFeedback();
               volume.value = value;
             },
-            onChangeEnd: (value) {
-              ref
-                  .read(sharedPreferenceUtilProvider)
-                  .setDouble(SharedPreferenceKey.volume, value);
-            },
+            onChangeEnd: (value) => PreferenceKeyType.volume.setDouble(value),
             activeColor: AppColor.secondary,
           ),
         ],

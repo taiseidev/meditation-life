@@ -3,16 +3,15 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
 import 'package:meditation_life/shared/strings.dart';
 import 'package:meditation_life/utils/local_time_zone_util.dart';
-import 'package:meditation_life/utils/shared_preference_util.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/timezone.dart';
 
 final notificationServiceProvider = Provider<NotificationService>(
   (ref) => NotificationService(
     LocalTimeZoneUtil.localTimeZone,
-    ref.read(sharedPreferenceUtilProvider),
     FlutterLocalNotificationsPlugin(),
   ),
 );
@@ -20,12 +19,10 @@ final notificationServiceProvider = Provider<NotificationService>(
 class NotificationService {
   NotificationService(
     this._currentTimeZone,
-    this.prefs,
     this.localNotificationsPlugin,
   );
 
   final String _currentTimeZone;
-  final SharePreferenceUtil prefs;
   final FlutterLocalNotificationsPlugin localNotificationsPlugin;
 
   Future<void> notificationSettings() async {
@@ -52,7 +49,7 @@ class NotificationService {
   }
 
   bool _shouldSendNotification() =>
-      prefs.getBool(SharedPreferenceKey.isNotificationEnabled) ?? true;
+      PreferenceKeyType.isNotificationEnabled.getBool();
 
   Future<void> _scheduleDailyNotification() async {
     if (!_shouldSendNotification()) {
@@ -84,8 +81,7 @@ class NotificationService {
 // 1回目に通知を飛ばす時間の作成
   tz.TZDateTime _nextInstance(Location region) {
     final notificationTimeList =
-        prefs.getStringList(SharedPreferenceKey.notificationTimeList) ??
-            ['08', '00'];
+        PreferenceKeyType.notificationTimeList.getStringList();
 
     final hour = int.parse(notificationTimeList[0]);
     final minute = int.parse(notificationTimeList[1]);

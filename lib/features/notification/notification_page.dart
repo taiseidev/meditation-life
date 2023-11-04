@@ -2,32 +2,25 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/shared/strings.dart';
-import 'package:meditation_life/utils/shared_preference_util.dart';
 
 class NotificationPage extends HookConsumerWidget {
   const NotificationPage({super.key});
 
-  static const defaultTimeList = ['08', '00'];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isNotificationEnabled = useState<bool>(true);
-    final notificationTimeList = useState<List<String>>(defaultTimeList);
+    final notificationTimeList = useState<List<String>>([]);
 
     useEffect(
       () {
         Future(() async {
-          isNotificationEnabled.value = ref
-                  .read(sharedPreferenceUtilProvider)
-                  .getBool(SharedPreferenceKey.isNotificationEnabled) ??
-              true;
+          isNotificationEnabled.value =
+              PreferenceKeyType.isNotificationEnabled.getBool();
           notificationTimeList.value =
-              ref.read(sharedPreferenceUtilProvider).getStringList(
-                        SharedPreferenceKey.notificationTimeList,
-                      ) ??
-                  defaultTimeList;
+              PreferenceKeyType.isNotificationEnabled.getStringList();
         });
         return null;
       },
@@ -60,10 +53,7 @@ class NotificationPage extends HookConsumerWidget {
             value: isNotificationEnabled.value,
             onChanged: ({required bool value}) {
               isNotificationEnabled.value = value;
-              ref.read(sharedPreferenceUtilProvider).setBool(
-                    SharedPreferenceKey.isNotificationEnabled,
-                    value: value,
-                  );
+              PreferenceKeyType.isNotificationEnabled.setBool(setBool: value);
             },
           ),
           _NotificationDateTile(
@@ -73,10 +63,8 @@ class NotificationPage extends HookConsumerWidget {
               final hour = value.hour.toString().padLeft(2, '0');
               final minute = value.minute.toString().padLeft(2, '0');
               notificationTimeList.value = [hour, minute];
-              ref.read(sharedPreferenceUtilProvider).setStringList(
-                SharedPreferenceKey.notificationTimeList,
-                [hour, minute],
-              );
+              PreferenceKeyType.isNotificationEnabled
+                  .setStringList(values: [hour, minute]);
             },
           ),
         ],

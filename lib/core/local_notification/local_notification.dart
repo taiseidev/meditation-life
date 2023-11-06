@@ -10,23 +10,19 @@ import 'package:timezone/timezone.dart';
 
 class LocalNotification {
   factory LocalNotification() => _instance;
-
   LocalNotification._internal();
-  static final _instance = LocalNotification._internal();
 
-  static late final FlutterLocalNotificationsPlugin _notice;
+  static final LocalNotification _instance = LocalNotification._internal();
+
+  final FlutterLocalNotificationsPlugin _notice =
+      FlutterLocalNotificationsPlugin();
+
   FlutterLocalNotificationsPlugin get notice => _notice;
 
-  static void init() {
-    _notice = FlutterLocalNotificationsPlugin();
+  Future<void> localNotificationSetting() async {
+    await _requestNotificationPermission();
+    await _scheduleDailyNotification();
   }
-
-  Future<void> localNotificationSetting() async => Future.wait(
-        [
-          _requestNotificationPermission(),
-          _scheduleDailyNotification(),
-        ],
-      );
 
   Future<void> _requestNotificationPermission() async {
     if (Platform.isIOS) {
@@ -55,27 +51,37 @@ class LocalNotification {
       tz.getLocation(LocalTimeZoneUtil.localTimeZone),
     );
 
+    const androidDetails = AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'your_channel_description',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const iOSDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    const notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iOSDetails,
+    );
+
     await notice.zonedSchedule(
       0,
       Strings.appTitle,
       Strings.notificationMessage,
       timezone,
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          '',
-          '',
-          channelDescription: '',
-        ),
-        iOS: DarwinNotificationDetails(badgeNumber: 1),
-      ),
+      notificationDetails,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      // 毎日通知を送信する様に設定
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 
-// 1回目に通知を飛ばす時間の作成
   tz.TZDateTime _nextInstance(Location region) {
     final notificationTimeList =
         PreferenceKeyType.notificationTimeList.getStringList();
@@ -83,10 +89,8 @@ class LocalNotification {
     final hour = int.parse(notificationTimeList.first);
     final minute = int.parse(notificationTimeList.last);
 
-    // 現在のローカル時間を取得
     final now = tz.TZDateTime.now(region);
 
-    // 現在の日付の指定した時間を取得
     var scheduledDate = tz.TZDateTime(
       region,
       now.year,
@@ -96,19 +100,10 @@ class LocalNotification {
       minute,
     );
 
-    // スケジュールされた時刻が現在時刻よりも過去の場合
-    // 明日に通知設定
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
     return scheduledDate;
   }
-
-// デバッグ用（5秒後に通知）
-  // ignore: unused_element
-  tz.TZDateTime _fiveSecondsLater(Location region) =>
-      tz.TZDateTime.now(region).add(
-        const Duration(seconds: 5),
-      );
 }

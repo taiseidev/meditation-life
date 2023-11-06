@@ -53,7 +53,7 @@ class NotificationPage extends HookConsumerWidget {
             value: isNotificationEnabled.value,
             onChanged: ({required bool value}) {
               isNotificationEnabled.value = value;
-              PreferenceKeyType.isNotificationEnabled.setBool(setBool: value);
+              PreferenceKeyType.isNotificationEnabled.setBool(value);
             },
           ),
           _NotificationDateTile(
@@ -64,7 +64,7 @@ class NotificationPage extends HookConsumerWidget {
               final minute = value.minute.toString().padLeft(2, '0');
               notificationTimeList.value = [hour, minute];
               PreferenceKeyType.isNotificationEnabled
-                  .setStringList(values: [hour, minute]);
+                  .setStringList([hour, minute]);
             },
           ),
         ],

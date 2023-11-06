@@ -1,5 +1,6 @@
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/domain/repository/meditation_repository.dart';
+import 'package:meditation_life/features/meditation/infrastructure/repository/meditation_repository_provider.dart';
 import 'package:meditation_life/features/meditation_history/domain/repository/meditation_history_repository.dart';
 import 'package:meditation_life/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -1,4 +1,5 @@
 import 'package:meditation_life/core/shared_preference/shared_preference_instance.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum PreferenceKeyType {
   volume,
@@ -9,59 +10,36 @@ enum PreferenceKeyType {
 
 extension PreferenceKeyTypeEx on PreferenceKeyType {
   String get name => switch (this) {
-        PreferenceKeyType.volume => PreferenceKeyType.volume.name,
-        PreferenceKeyType.vibration => PreferenceKeyType.vibration.name,
-        PreferenceKeyType.notificationTimeList =>
-          PreferenceKeyType.notificationTimeList.name,
-        PreferenceKeyType.isNotificationEnabled =>
-          PreferenceKeyType.isNotificationEnabled.name,
+        PreferenceKeyType.volume => 'volume',
+        PreferenceKeyType.vibration => 'vibration',
+        PreferenceKeyType.notificationTimeList => 'notificationTimeList',
+        PreferenceKeyType.isNotificationEnabled => 'isNotificationEnabled',
       };
 
-  Future<bool> setInt(int value) async {
-    return SharedPreferencesInstance().prefs.setInt(name, value);
-  }
+  SharedPreferences get _prefs => SharedPreferencesInstance().prefs;
 
-  int? getInt({int? defaultValue}) {
-    if (SharedPreferencesInstance().prefs.containsKey(name)) {
-      return SharedPreferencesInstance().prefs.getInt(name);
-    } else {
-      return defaultValue;
-    }
-  }
+  int getInt({int? defaultValue}) => _prefs.getInt(name) ?? defaultValue ?? 0;
 
-  Future<bool> setString(String value) async {
-    return SharedPreferencesInstance().prefs.setString(name, value);
-  }
+  double getDouble({double? defaultValue}) =>
+      _prefs.getDouble(name) ?? defaultValue ?? 1.0;
 
-  String? getString({String? defaultValue}) {
-    if (SharedPreferencesInstance().prefs.containsKey(name)) {
-      return SharedPreferencesInstance().prefs.getString(name);
-    } else {
-      return defaultValue;
-    }
-  }
+  bool getBool({bool? defaultValue}) =>
+      SharedPreferencesInstance().prefs.getBool(name) ?? defaultValue ?? false;
 
-  List<String> getStringList({String? defaultValue}) {
-    return SharedPreferencesInstance().prefs.getStringList(name) ??
-        ['08', '00'];
-  }
+  String getString({String? defaultValue}) =>
+      _prefs.getString(name) ?? defaultValue ?? '';
 
-  Future<bool> setStringList({required List<String> values}) async {
-    return SharedPreferencesInstance().prefs.setStringList(name, []);
-  }
+  List<String> getStringList({List<String>? defaultValue}) =>
+      _prefs.getStringList(name) ?? defaultValue ?? ['08', '00'];
 
-  Future<bool> setBool({required bool setBool}) async {
-    return SharedPreferencesInstance().prefs.setBool(name, setBool);
-  }
+  Future<void> setInt(int value) async => _prefs.setInt(name, value);
 
-  bool getBool() {
-    return SharedPreferencesInstance().prefs.getBool(name) ?? false;
-  }
+  Future<void> setDouble(double value) async => _prefs.setDouble(name, value);
 
-  double getDouble() {
-    return SharedPreferencesInstance().prefs.getDouble(name) ?? 1.0;
-  }
+  Future<void> setBool(bool value) async => _prefs.setBool(name, value);
 
-  Future<void> setDouble(double value) async =>
-      SharedPreferencesInstance().prefs.setDouble(name, value);
+  Future<void> setString(String value) async => _prefs.setString(name, value);
+
+  Future<void> setStringList(List<String> values) async =>
+      _prefs.setStringList(name, values);
 }

@@ -8,15 +8,17 @@ class FirebaseMeditationRepository implements MeditationRepository {
   final FirebaseFirestore _db;
 
   static const _collection = 'meditations';
+
   @override
   Stream<List<Meditation>> fetchMeditationsStream() {
-    return _db.collection(_collection).snapshots().map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => MeditationDto.fromDocument(doc).toDomain(),
-              )
-              .toList(),
-        );
+    final snapshots = _db.collection(_collection).snapshots();
+    return snapshots.map(
+      (snapshot) => snapshot.docs
+          .map(
+            (doc) => MeditationDto.fromDocument(doc).toDomain(),
+          )
+          .toList(),
+    );
   }
 
   @override

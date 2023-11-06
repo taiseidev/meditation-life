@@ -53,7 +53,7 @@ class SoundSettingPage extends HookConsumerWidget {
                   ref
                       .read(vibrationStateProvider.notifier)
                       .toggle(isEnabled: value);
-                  PreferenceKeyType.vibration.setBool(setBool: value);
+                  PreferenceKeyType.vibration.setBool(value);
                 },
               );
             },

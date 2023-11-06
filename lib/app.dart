@@ -1,35 +1,40 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/features/auth/infrastructure/auth_repository.dart';
+import 'package:meditation_life/features/auth/infrastructure/user_repository.dart';
 import 'package:meditation_life/gen/assets.gen.dart';
 import 'package:meditation_life/shared/main_page.dart';
 import 'package:meditation_life/shared/strings.dart';
 
-class App extends StatefulWidget {
-  const App({super.key});
+class App extends HookConsumerWidget {
+  App({super.key});
 
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  final imagePaths = [
+  final _imagePaths = [
     Assets.icons.meditationIcon.path,
     Assets.icons.appLogo.path,
   ];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    for (final path in imagePaths) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    for (final path in _imagePaths) {
       precacheImage(
         AssetImage(path),
         context,
       );
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    useEffect(
+      () {
+        Future(() async {
+          await _setUpUser(ref);
+        });
+        return null;
+      },
+      const [],
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Strings.appTitle,
@@ -49,5 +54,15 @@ class _AppState extends State<App> {
       ),
       home: const MainPage(),
     );
+  }
+
+  /// アプリ初回起動時にユーザを作成
+  Future<void> _setUpUser(WidgetRef ref) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    final userRepository = ref.read(userRepositoryProvider);
+    if (authRepository.authUser == null) {
+      await authRepository.signInWithAnonymously();
+      await userRepository.createUser();
+    }
   }
 }

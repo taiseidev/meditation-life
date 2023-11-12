@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/core/res/color.dart';
-import 'package:meditation_life/features/main_page.dart';
 import 'package:meditation_life/features/meditation_history/domain/usecase/meditation_history_usecase.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
+import 'package:meditation_life/shared/pages/main_page.dart';
 
 class MeditationCompletedModal extends StatelessWidget {
   const MeditationCompletedModal({
@@ -92,8 +92,8 @@ class MeditationCompletedModal extends StatelessWidget {
                   // 音源再生画面を全て閉じてタブを切り替え
                   Navigator.popUntil(context, (route) => route.isFirst);
                   ref
-                      .read(selectedIndexProvider.notifier)
-                      .update((state) => state = 0);
+                      .read(selectedTabIndexProvider.notifier)
+                      .switchTab(index: 0);
                 }
               },
               child: const Text(

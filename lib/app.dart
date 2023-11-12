@@ -6,7 +6,7 @@ import 'package:meditation_life/core/gen/assets.gen.dart';
 import 'package:meditation_life/core/utils/strings.dart';
 import 'package:meditation_life/features/auth/infrastructure/auth_repository.dart';
 import 'package:meditation_life/features/auth/infrastructure/user_repository.dart';
-import 'package:meditation_life/features/main_page.dart';
+import 'package:meditation_life/shared/pages/main_page.dart';
 
 class App extends HookConsumerWidget {
   App({super.key});
@@ -52,7 +52,7 @@ class App extends HookConsumerWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MainPage(),
+      home: MainPage(),
     );
   }
 

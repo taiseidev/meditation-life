@@ -14,7 +14,7 @@ class FirebaseMeditationHistoryRepository
   static const _date = 'date';
 
   @override
-  Future<void> addMeditationHistory(String meditationId, DateTime date) async {
+  Future<void> add(String meditationId, DateTime date) async {
     final collectionName = _getCollectionName(date);
     final auth = FirebaseAuth.instance;
     await _db
@@ -30,7 +30,7 @@ class FirebaseMeditationHistoryRepository
   }
 
   @override
-  Future<List<MeditationHistory>> fetchMeditationHistories(
+  Future<List<MeditationHistory>> fetchAll(
     DateTime date,
   ) async {
     final collectionName = _getCollectionName(date);

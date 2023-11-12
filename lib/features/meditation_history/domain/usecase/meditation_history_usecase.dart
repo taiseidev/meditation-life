@@ -26,10 +26,10 @@ class MeditationHistoryUsecase {
   final MeditationRepository _meditationRepository;
 
   Future<void> addMeditationHistory(String meditationId, DateTime date) async =>
-      _repository.addMeditationHistory(meditationId, date);
+      _repository.add(meditationId, date);
 
   Future<List<Meditation>> fetchUserMeditationHistory(DateTime date) async {
-    final histories = await _repository.fetchMeditationHistories(date);
+    final histories = await _repository.fetchAll(date);
     final meditationIds = histories.map((e) => e.meditationId).toList();
     final meditations =
         await _meditationRepository.fetchMeditationsByIds(meditationIds);

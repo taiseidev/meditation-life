@@ -3,23 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/extension/date_time_ext.dart';
 import 'package:meditation_life/core/extension/int_extension.dart';
 import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/utils/ad_mob_util.dart';
 import 'package:meditation_life/core/utils/local_time_zone_util.dart';
 import 'package:meditation_life/core/utils/strings.dart';
 import 'package:meditation_life/core/utils/vibration.dart';
+import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
+
+part 'meditation_history_page.g.dart';
 
 class MeditationHistoryPage extends HookConsumerWidget {
   MeditationHistoryPage({super.key});
 
-  final adBanner = AdBannerService();
   final now = tz.TZDateTime.now(
     tz.getLocation(
       LocalTimeZoneUtil.localTimeZone,
+    ),
+  );
+
+  final _divider = const SliverToBoxAdapter(
+    child: Divider(
+      indent: 24,
+      endIndent: 24,
     ),
   );
 
@@ -31,79 +42,28 @@ class MeditationHistoryPage extends HookConsumerWidget {
     final selectedDay = useState<DateTime>(now);
     final pageMonth = useState<DateTime>(now);
 
-    useEffect(() {
-      adBanner.create();
-      return null;
-    });
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          Strings.meditationHistoryTitle,
-        ),
+        title: const Text(Strings.meditationHistoryTitle),
       ),
       body: switch (state) {
         AsyncData(:final value) => CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child: adBanner.bannerAd != null
-                    ? SizedBox(
-                        width: adBanner.bannerAd!.size.width.toDouble(),
-                        height: adBanner.bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: adBanner.bannerAd!),
-                      )
-                    : const SizedBox.shrink(),
+                child: _Banner(),
               ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        value.month(pageMonth.value).toString(),
-                        style: const TextStyle(
-                          color: AppColor.secondary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text(
-                        Strings.monthlyMeditationProgress,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 40),
-                      Text(
-                        value.events.length.toString(),
-                        style: const TextStyle(
-                          color: AppColor.secondary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '/${value.daysInMonth(pageMonth.value)}日',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  child: _MonthlyMeditationSummary(
+                    month: pageMonth.value.month.toString(),
+                    monthlyMeditationCount: value.events.length.toString(),
+                    days: pageMonth.value.daysInMonth(),
                   ),
                 ),
               ),
-              const SliverToBoxAdapter(
-                child: Divider(
-                  indent: 24,
-                  endIndent: 24,
-                ),
-              ),
+              _divider,
               SliverToBoxAdapter(
                 child: Padding(
                   padding:
@@ -178,55 +138,30 @@ class MeditationHistoryPage extends HookConsumerWidget {
                           .fetchMeditationListPerMonth(focusDay);
                     },
                     calendarBuilders: CalendarBuilders(
-                      markerBuilder: (context, date, events) {
-                        if (events.isNotEmpty) {
-                          return _Events(date, events);
+                      markerBuilder: (_, __, events) {
+                        if (events.isEmpty) {
+                          return null;
                         }
-                        return null;
+                        return _Events(events);
                       },
                     ),
                   ),
                 ),
               ),
-              const SliverToBoxAdapter(
-                child: Divider(
-                  indent: 24,
-                  endIndent: 24,
-                ),
-              ),
+              _divider,
               SliverList.builder(
-                itemCount: value
-                    .getMeditationHistoryForDate(
-                      selectedDay.value,
-                    )
+                itemCount: ref
+                    .watch(meditationHistoriesOnDateProvider(selectedDay.value))
                     .length,
                 itemBuilder: (context, index) {
-                  final item = value.getMeditationHistoryForDate(
-                    selectedDay.value,
+                  final item = ref.watch(
+                    meditationHistoriesOnDateProvider(selectedDay.value),
                   )[index];
-                  return ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: item.thumbnailUrl,
-                        width: 100,
-                      ),
-                    ),
-                    title: Text(
-                      item.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '時間：${item.duration.formatTime()}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  return ProviderScope(
+                    overrides: [
+                      _currentItemProvider.overrideWith((ref) => item),
+                    ],
+                    child: const _ListItem(),
                   );
                 },
               ),
@@ -245,14 +180,133 @@ class MeditationHistoryPage extends HookConsumerWidget {
   }
 }
 
-class _Events extends StatelessWidget {
-  const _Events(
-    this.date,
-    this.events,
+// TODO(taisei): リファクタ
+class _Banner extends HookWidget {
+  _Banner();
+
+  final adBanner = AdBannerService();
+
+  @override
+  Widget build(BuildContext context) {
+    useEffect(() {
+      adBanner.create();
+      return null;
+    });
+
+    return adBanner.bannerAd != null
+        ? SizedBox(
+            width: adBanner.bannerAd!.size.width.toDouble(),
+            height: adBanner.bannerAd!.size.height.toDouble(),
+            child: AdWidget(ad: adBanner.bannerAd!),
+          )
+        : const SizedBox.shrink();
+  }
+}
+
+class _MonthlyMeditationSummary extends StatelessWidget {
+  _MonthlyMeditationSummary({
+    required this.month,
+    required this.monthlyMeditationCount,
+    required this.days,
+  });
+
+  final String month;
+  final String monthlyMeditationCount;
+  final int days;
+
+  static const boldTextStyle = TextStyle(
+    fontWeight: FontWeight.bold,
   );
 
-  final DateTime date;
-  final List<dynamic> events;
+  final bold24TextStyle = boldTextStyle.copyWith(
+    color: AppColor.secondary,
+    fontSize: 24,
+  );
+
+  final bold12TextStyle = boldTextStyle.copyWith(
+    fontSize: 12,
+  );
+
+  String get totalDaysInMonth => '/$days日';
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(
+          month,
+          style: bold24TextStyle,
+        ),
+        Text(
+          Strings.monthlyMeditationProgress,
+          style: bold12TextStyle,
+        ),
+        const SizedBox(width: 40),
+        Text(
+          monthlyMeditationCount,
+          style: bold24TextStyle,
+        ),
+        Text(
+          totalDaysInMonth,
+          style: bold12TextStyle,
+        ),
+      ],
+    );
+  }
+}
+
+class _Calendar extends StatelessWidget {
+  const _Calendar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+@riverpod
+Meditation _currentItem(_CurrentItemRef ref) => throw UnimplementedError();
+
+class _ListItem extends ConsumerWidget {
+  const _ListItem();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(_currentItemProvider);
+    return ListTile(
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: CachedNetworkImage(
+          imageUrl: item.thumbnailUrl,
+          width: 100,
+        ),
+      ),
+      title: Text(
+        item.title,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        '時間：${item.duration.formatTime()}',
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+}
+
+class _Events extends StatelessWidget {
+  const _Events(this.events);
+
+  final List<Object?> events;
 
   @override
   Widget build(BuildContext context) {

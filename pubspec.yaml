@@ -59,6 +59,8 @@ dependencies:
   json_annotation: ^4.8.1
   riverpod_annotation: ^2.2.1
 
+flutter_gen:
+  output: lib/core/gen
 
 dev_dependencies:
   flutter_test:

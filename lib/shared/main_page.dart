@@ -1,10 +1,10 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/gen/assets.gen.dart';
 import 'package:meditation_life/features/meditation/presentation/pages/meditation_page.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/features/setting/presentation/setting_page.dart';
-import 'package:meditation_life/gen/assets.gen.dart';
 import 'package:meditation_life/shared/res/color.dart';
 import 'package:meditation_life/utils/vibration_utils.dart';
 

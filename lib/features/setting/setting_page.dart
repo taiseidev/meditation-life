@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/core/utils/package_info_util.dart';
 import 'package:meditation_life/core/utils/strings.dart';
-import 'package:meditation_life/core/utils/vibration_utils.dart';
+import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
 import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
 import 'package:meditation_life/shared/widgets/common_app_bar.dart';
@@ -127,8 +127,8 @@ class _SettingsTile extends ConsumerWidget {
         trailing: const Icon(
           Icons.chevron_right,
         ),
-        onTap: () {
-          ref.read(vibrationUtilProvider).hapticFeedback();
+        onTap: () async {
+          await Vibration.feedBack();
           callback();
         },
       ),

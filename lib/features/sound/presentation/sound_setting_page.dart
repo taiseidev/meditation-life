@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
 import 'package:meditation_life/core/utils/strings.dart';
-import 'package:meditation_life/core/utils/vibration_utils.dart';
+import 'package:meditation_life/core/utils/vibration.dart';
 
 // TODO(taisei): 全体的にリファクタ
 class SoundSettingPage extends HookConsumerWidget {
@@ -14,12 +14,6 @@ class SoundSettingPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      final isEnabled = PreferenceKeyType.vibration.getBool();
-      ref.read(vibrationStateProvider.notifier).toggle(isEnabled: isEnabled);
-      return null;
-    });
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,13 +41,10 @@ class SoundSettingPage extends HookConsumerWidget {
             builder: (context, ref, child) {
               return _SettingSwitchTile(
                 title: Strings.vibrationLabel,
-                value: ref.watch(vibrationStateProvider),
-                onChanged: ({required bool value}) {
-                  ref.read(vibrationUtilProvider).hapticFeedback();
-                  ref
-                      .read(vibrationStateProvider.notifier)
-                      .toggle(isEnabled: value);
-                  PreferenceKeyType.vibration.setBool(value);
+                value: PreferenceKeyType.vibration.getBool(),
+                onChanged: ({required bool value}) async {
+                  await Vibration.feedBack();
+                  await PreferenceKeyType.vibration.setBool(value);
                 },
               );
             },
@@ -87,8 +78,8 @@ class _SliderTile extends HookConsumerWidget {
           const Spacer(),
           Slider(
             value: volume.value,
-            onChanged: (value) {
-              ref.read(vibrationUtilProvider).hapticFeedback();
+            onChanged: (value) async {
+              await Vibration.feedBack();
               volume.value = value;
             },
             onChangeEnd: (value) => PreferenceKeyType.volume.setDouble(value),

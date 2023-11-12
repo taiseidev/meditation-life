@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/core/res/color.dart';
+import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/meditation_history/domain/usecase/meditation_history_usecase.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
 import 'package:meditation_life/shared/pages/main_page.dart';
@@ -79,6 +80,7 @@ class MeditationCompletedModal extends StatelessWidget {
           builder: (context, ref, child) {
             return TextButton(
               onPressed: () async {
+                await Vibration.feedBack();
                 // 瞑想履歴のProviderをリフレッシュ
                 ref.invalidate(meditationHistoryNotifierProvider);
                 // 瞑想履歴をFirestoreに保存

@@ -2,7 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/core/res/color.dart';
-import 'package:meditation_life/core/utils/vibration_utils.dart';
+import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/meditation/presentation/pages/meditation_page.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/features/setting/setting_page.dart';
@@ -35,8 +35,8 @@ class MainPage extends HookConsumerWidget {
         child: pages[ref.watch(selectedTabIndexProvider)],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(vibrationUtilProvider).hapticFeedback();
+        onPressed: () async {
+          await Vibration.feedBack();
           ref
               .read(selectedTabIndexProvider.notifier)
               .switchTab(index: meditationPageIndex);
@@ -59,8 +59,8 @@ class MainPage extends HookConsumerWidget {
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
-        onTap: (index) {
-          ref.read(vibrationUtilProvider).hapticFeedback();
+        onTap: (index) async {
+          await Vibration.feedBack();
           ref.read(selectedTabIndexProvider.notifier).switchTab(index: index);
         },
         //other params

@@ -8,6 +8,7 @@ import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/utils/ad_mob_util.dart';
 import 'package:meditation_life/core/utils/local_time_zone_util.dart';
 import 'package:meditation_life/core/utils/strings.dart';
+import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -158,7 +159,8 @@ class MeditationHistoryPage extends HookConsumerWidget {
                     selectedDayPredicate: (day) {
                       return isSameDay(selectedDay.value, day);
                     },
-                    onDaySelected: (selectDay, focusDay) {
+                    onDaySelected: (selectDay, focusDay) async {
+                      await Vibration.feedBack();
                       selectedDay.value = selectDay;
                       focusedDay.value = tz.TZDateTime.from(
                         focusDay,

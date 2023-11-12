@@ -4,6 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/utils/ad_mob_util.dart';
 import 'package:meditation_life/core/utils/strings.dart';
+import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_play_page.dart';
 
@@ -73,6 +74,7 @@ class _MeditationDetailViewState extends State<MeditationDetailView> {
                 const SizedBox(height: 16),
                 InkWell(
                   onTap: () async {
+                    await Vibration.feedBack();
                     setState(() {
                       isLoading = true;
                     });

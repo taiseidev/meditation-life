@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
-import 'package:meditation_life/shared/res/color.dart';
-import 'package:meditation_life/shared/strings.dart';
-import 'package:meditation_life/utils/vibration_utils.dart';
+import 'package:meditation_life/core/utils/strings.dart';
+import 'package:meditation_life/core/utils/vibration_utils.dart';
 
 // TODO(taisei): 全体的にリファクタ
 class SoundSettingPage extends HookConsumerWidget {

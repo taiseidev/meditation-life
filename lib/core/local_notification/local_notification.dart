@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
-import 'package:meditation_life/shared/strings.dart';
-import 'package:meditation_life/utils/local_time_zone_util.dart';
+import 'package:meditation_life/core/utils/local_time_zone_util.dart';
+import 'package:meditation_life/core/utils/strings.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/timezone.dart';
 

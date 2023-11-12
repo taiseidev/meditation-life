@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/extension/int_extension.dart';
+import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/features/meditation/presentation/meditation_notifier.dart';
 import 'package:meditation_life/features/meditation/presentation/pages/meditation_detail_page.dart';
-import 'package:meditation_life/shared/extension/int_extension.dart';
-import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationPage extends ConsumerWidget {
   const MeditationPage({super.key});

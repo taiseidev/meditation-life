@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/utils/package_info_util.dart';
+import 'package:meditation_life/core/utils/strings.dart';
+import 'package:meditation_life/core/utils/vibration_utils.dart';
+import 'package:meditation_life/core/widgets/common_app_bar.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
 import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
-import 'package:meditation_life/shared/strings.dart';
-import 'package:meditation_life/shared/widgets/common_app_bar.dart';
-import 'package:meditation_life/utils/package_info_util.dart';
-import 'package:meditation_life/utils/vibration_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {

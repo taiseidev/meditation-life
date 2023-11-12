@@ -2,9 +2,9 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
-import 'package:meditation_life/shared/res/color.dart';
-import 'package:meditation_life/shared/strings.dart';
+import 'package:meditation_life/core/utils/strings.dart';
 
 class NotificationPage extends HookConsumerWidget {
   const NotificationPage({super.key});

@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:meditation_life/core/extension/int_extension.dart';
+import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/modal/meditation_completed_modal.dart';
-import 'package:meditation_life/shared/extension/int_extension.dart';
-import 'package:meditation_life/shared/res/color.dart';
 
 class MeditationPlayScreen extends StatefulWidget {
   const MeditationPlayScreen(this.meditation, {super.key});

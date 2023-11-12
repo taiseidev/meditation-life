@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/extension/int_extension.dart';
+import 'package:meditation_life/core/res/color.dart';
+import 'package:meditation_life/core/utils/ad_mob_util.dart';
+import 'package:meditation_life/core/utils/local_time_zone_util.dart';
+import 'package:meditation_life/core/utils/strings.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_notifier.dart';
-import 'package:meditation_life/shared/extension/int_extension.dart';
-import 'package:meditation_life/shared/res/color.dart';
-import 'package:meditation_life/shared/strings.dart';
-import 'package:meditation_life/utils/ad_mob_util.dart';
-import 'package:meditation_life/utils/local_time_zone_util.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 

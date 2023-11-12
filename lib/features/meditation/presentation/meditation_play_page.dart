@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:meditation_life/core/extension/int_extension.dart';
+import 'package:meditation_life/core/extension/void_callback_ext.dart';
 import 'package:meditation_life/core/res/color.dart';
-import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/meditation/domain/meditation.dart';
 import 'package:meditation_life/features/meditation/presentation/modal/meditation_completed_modal.dart';
 
@@ -69,11 +69,10 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
           SafeArea(
             child: IconButton(
               onPressed: () async {
-                await Vibration.feedBack();
                 if (context.mounted) {
                   Navigator.pop(context);
                 }
-              },
+              }.withFeedback(),
               icon: const Icon(
                 Icons.arrow_back_ios,
                 color: Colors.white,
@@ -100,7 +99,6 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                         color: Colors.white,
                         iconSize: 64,
                         onPressed: () async {
-                          await Vibration.feedBack();
                           setState(() {
                             isPlaying = !isPlaying;
                           });
@@ -109,7 +107,7 @@ class MeditationPlayScreenState extends State<MeditationPlayScreen> {
                           } else {
                             await player.stop();
                           }
-                        },
+                        }.withFeedback(),
                       ),
                     ],
                   ),

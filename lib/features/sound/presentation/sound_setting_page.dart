@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/extension/void_callback_ext.dart';
 import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
 import 'package:meditation_life/core/utils/strings.dart';
-import 'package:meditation_life/core/utils/vibration.dart';
 
 // TODO(taisei): 全体的にリファクタ
 class SoundSettingPage extends HookConsumerWidget {
@@ -43,9 +43,8 @@ class SoundSettingPage extends HookConsumerWidget {
                 title: Strings.vibrationLabel,
                 value: PreferenceKeyType.vibration.getBool(),
                 onChanged: ({required bool value}) async {
-                  await Vibration.feedBack();
                   await PreferenceKeyType.vibration.setBool(value);
-                },
+                }.withFeedback(),
               );
             },
           ),
@@ -78,8 +77,7 @@ class _SliderTile extends HookConsumerWidget {
           const Spacer(),
           Slider(
             value: volume.value,
-            onChanged: (value) async {
-              await Vibration.feedBack();
+            onChanged: (double value) async {
               volume.value = value;
             },
             onChangeEnd: (value) => PreferenceKeyType.volume.setDouble(value),

@@ -1,8 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/extension/void_callback_ext.dart';
 import 'package:meditation_life/core/res/color.dart';
-import 'package:meditation_life/core/utils/vibration.dart';
 import 'package:meditation_life/features/meditation/presentation/pages/meditation_page.dart';
 import 'package:meditation_life/features/meditation_history/presentation/meditation_history_page.dart';
 import 'package:meditation_life/features/setting/setting_page.dart';
@@ -36,11 +36,10 @@ class MainPage extends HookConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Vibration.feedBack();
           ref
               .read(selectedTabIndexProvider.notifier)
               .switchTab(index: meditationPageIndex);
-        },
+        }.withFeedback(),
         backgroundColor: AppColor.secondary.withOpacity(0.6),
         shape: const CircleBorder(),
         child: const Icon(
@@ -59,11 +58,9 @@ class MainPage extends HookConsumerWidget {
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 32,
         rightCornerRadius: 32,
-        onTap: (index) async {
-          await Vibration.feedBack();
+        onTap: (int index) async {
           ref.read(selectedTabIndexProvider.notifier).switchTab(index: index);
-        },
-        //other params
+        }.withFeedback(),
       ),
     );
   }

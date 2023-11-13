@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,6 +16,8 @@ class SoundSettingPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isVibrating = useState(PreferenceKeyType.vibration.getBool());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,9 +45,10 @@ class SoundSettingPage extends HookConsumerWidget {
             builder: (context, ref, child) {
               return _SettingSwitchTile(
                 title: Strings.vibrationLabel,
-                value: PreferenceKeyType.vibration.getBool(),
-                onChanged: ({required bool value}) async {
-                  await PreferenceKeyType.vibration.setBool(value);
+                value: isVibrating.value,
+                onChanged: ({required bool value}) {
+                  isVibrating.value = value;
+                  unawaited(PreferenceKeyType.vibration.setBool(value));
                 }.withFeedback(),
               );
             },

@@ -61,7 +61,7 @@ class LocalNotification {
 
     const iOSDetails = DarwinNotificationDetails(
       presentAlert: true,
-      presentBadge: true,
+      presentBadge: false,
       presentSound: true,
     );
 

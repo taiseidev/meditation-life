@@ -24,7 +24,7 @@ class FirebaseMeditationHistoryRepository
         .add(
       <String, dynamic>{
         _meditationId: meditationId,
-        _date: Timestamp.now(),
+        _date: Timestamp.fromDate(date),
       },
     );
   }

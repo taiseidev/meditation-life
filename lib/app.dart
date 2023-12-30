@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,8 +37,6 @@ class App extends HookConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Strings.appTitle,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
         appBarTheme: const AppBarTheme(

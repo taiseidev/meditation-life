@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -58,10 +57,7 @@ Future<void> main() async {
         ),
       ],
       observers: [RiverpodLogger()],
-      child: DevicePreview(
-        enabled: false,
-        builder: (context) => App(),
-      ),
+      child: App(),
     ),
   );
 }

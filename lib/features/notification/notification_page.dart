@@ -2,6 +2,7 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meditation_life/core/local_notification/local_notification.dart';
 import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/shared_preference/preference_key_type.dart';
 import 'package:meditation_life/core/utils/strings.dart';
@@ -16,12 +17,10 @@ class NotificationPage extends HookConsumerWidget {
 
     useEffect(
       () {
-        Future(() async {
-          isNotificationEnabled.value =
-              PreferenceKeyType.isNotificationEnabled.getBool();
-          notificationTimeList.value =
-              PreferenceKeyType.isNotificationEnabled.getStringList();
-        });
+        isNotificationEnabled.value =
+            PreferenceKeyType.isNotificationEnabled.getBool();
+        notificationTimeList.value =
+            PreferenceKeyType.notificationTimeList.getStringList();
         return null;
       },
     );
@@ -54,6 +53,7 @@ class NotificationPage extends HookConsumerWidget {
             onChanged: ({required bool value}) {
               isNotificationEnabled.value = value;
               PreferenceKeyType.isNotificationEnabled.setBool(value);
+              LocalNotification().localNotificationSetting();
             },
           ),
           _NotificationDateTile(
@@ -63,8 +63,9 @@ class NotificationPage extends HookConsumerWidget {
               final hour = value.hour.toString().padLeft(2, '0');
               final minute = value.minute.toString().padLeft(2, '0');
               notificationTimeList.value = [hour, minute];
-              PreferenceKeyType.isNotificationEnabled
+              PreferenceKeyType.notificationTimeList
                   .setStringList([hour, minute]);
+              LocalNotification().localNotificationSetting();
             },
           ),
         ],

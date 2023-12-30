@@ -44,8 +44,16 @@ class LocalNotification {
 
   Future<void> _scheduleDailyNotification() async {
     if (!PreferenceKeyType.isNotificationEnabled.getBool()) {
+      // 通知をキャンセル
+      await notice.cancel(0);
       return;
     }
+
+    await notice.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      ),
+    );
 
     final timezone = _nextInstance(
       tz.getLocation(LocalTimeZoneUtil.localTimeZone),

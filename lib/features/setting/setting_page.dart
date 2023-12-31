@@ -4,7 +4,6 @@ import 'package:meditation_life/core/extension/void_callback_ext.dart';
 import 'package:meditation_life/core/utils/package_info_util.dart';
 import 'package:meditation_life/core/utils/strings.dart';
 import 'package:meditation_life/features/notification/notification_page.dart';
-import 'package:meditation_life/features/sound/presentation/sound_setting_page.dart';
 import 'package:meditation_life/shared/widgets/common_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,15 +29,6 @@ class SettingPage extends StatelessWidget {
               context,
               MaterialPageRoute<void>(
                 builder: (context) => const NotificationPage(),
-              ),
-            ),
-          ),
-          _SettingsTile(
-            title: Strings.soundSettingLabel,
-            callback: () => Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => const SoundSettingPage(),
               ),
             ),
           ),

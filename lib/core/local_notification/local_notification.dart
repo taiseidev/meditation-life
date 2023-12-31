@@ -49,11 +49,13 @@ class LocalNotification {
       return;
     }
 
-    await notice.initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-      ),
-    );
+    if (Platform.isAndroid) {
+      await notice.initialize(
+        const InitializationSettings(
+          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        ),
+      );
+    }
 
     final timezone = _nextInstance(
       tz.getLocation(LocalTimeZoneUtil.localTimeZone),

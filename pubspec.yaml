@@ -66,7 +66,7 @@ dev_dependencies:
     sdk: flutter
   pedantic_mono: ^1.24.0+1
   isar_generator: ^3.1.0+1
-  build_runner: ^2.4.6
+  build_runner: ^2.4.7
   freezed: ^2.4.1
   json_serializable: ^6.7.1
   riverpod_generator: 2.3.3

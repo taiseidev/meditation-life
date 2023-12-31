@@ -35,6 +35,9 @@ class FirebaseMeditationHistoryRepository
   ) async {
     final collectionName = _getCollectionName(date);
     final auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) {
+      return [];
+    }
     final snapshot = await _db
         .collection(_usersCollection)
         .doc(auth.currentUser!.uid)

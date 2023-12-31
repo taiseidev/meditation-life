@@ -38,7 +38,7 @@ class LocalNotification {
       final androidImplementation =
           notice.resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
-      await androidImplementation?.requestPermission();
+      await androidImplementation?.requestNotificationsPermission();
     }
   }
 

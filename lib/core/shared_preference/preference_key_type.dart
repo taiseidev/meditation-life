@@ -36,6 +36,7 @@ extension PreferenceKeyTypeEx on PreferenceKeyType {
 
   Future<void> setDouble(double value) async => _prefs.setDouble(name, value);
 
+  // ignore: avoid_positional_boolean_parameters
   Future<void> setBool(bool value) async => _prefs.setBool(name, value);
 
   Future<void> setString(String value) async => _prefs.setString(name, value);

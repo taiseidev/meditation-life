@@ -256,15 +256,6 @@ class _MonthlyMeditationSummary extends StatelessWidget {
   }
 }
 
-class _Calendar extends StatelessWidget {
-  const _Calendar();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 @riverpod
 Meditation _currentItem(_CurrentItemRef ref) => throw UnimplementedError();
 

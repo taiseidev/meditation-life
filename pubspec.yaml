@@ -33,7 +33,7 @@ dependencies:
   shared_preferences: ^2.2.1
 
   # Advertisement
-  google_mobile_ads: ^3.0.0
+  google_mobile_ads: ^4.0.0
 
   # Other
   cached_network_image: ^3.3.1

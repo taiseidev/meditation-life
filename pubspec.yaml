@@ -64,7 +64,7 @@ flutter_gen:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic_mono: ^1.24.0+1
+  pedantic_mono: ^1.25.0
   isar_generator: ^3.1.0+1
   build_runner: ^2.4.7
   freezed: ^2.4.6

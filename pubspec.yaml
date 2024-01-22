@@ -43,7 +43,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
 
   # Local Notification
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^16.3.1+1
 
   # Audio
   just_audio: ^0.9.36

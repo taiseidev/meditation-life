@@ -34,10 +34,12 @@ class MeditationHistoryUsecase {
     final meditations =
         await _meditationRepository.fetchMeditationsByIds(meditationIds);
 
-    return meditations.map((meditation) {
-      final matchingHistory = histories
-          .firstWhere((history) => history.meditationId == meditation.id);
-      return meditation.copyWith(date: matchingHistory.date);
+    final result = histories.map((e) {
+      final sound =
+          meditations.firstWhere((element) => element.id == e.meditationId);
+      return sound.copyWith(date: e.date);
     }).toList();
+
+    return result;
   }
 }

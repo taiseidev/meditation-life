@@ -155,12 +155,7 @@ class MeditationHistoryPage extends HookConsumerWidget {
                   final item = ref.watch(
                     meditationHistoriesOnDateProvider(selectedDay.value),
                   )[index];
-                  return ProviderScope(
-                    overrides: [
-                      _currentItemProvider.overrideWith((ref) => item),
-                    ],
-                    child: const _ListItem(),
-                  );
+                  return _ListItem(item);
                 },
               ),
             ],
@@ -259,12 +254,13 @@ class _MonthlyMeditationSummary extends StatelessWidget {
 @riverpod
 Meditation _currentItem(_CurrentItemRef ref) => throw UnimplementedError();
 
-class _ListItem extends ConsumerWidget {
-  const _ListItem();
+class _ListItem extends StatelessWidget {
+  const _ListItem(this.item);
+
+  final Meditation item;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(_currentItemProvider);
+  Widget build(BuildContext context) {
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(10),

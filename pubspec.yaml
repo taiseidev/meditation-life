@@ -46,7 +46,7 @@ dependencies:
   flutter_local_notifications: ^17.0.0
 
   # Audio
-  just_audio: ^0.9.35
+  just_audio: ^0.9.37
 
   # Timezone
   timezone: ^0.9.2

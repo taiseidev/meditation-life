@@ -18,7 +18,7 @@ dependencies:
 
   # State
   hooks_riverpod: ^2.5.1
-  flutter_hooks: ^0.20.4
+  flutter_hooks: ^0.20.5
 
   # Firebase
   firebase_core: ^2.16.0

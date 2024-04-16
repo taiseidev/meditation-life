@@ -26,6 +26,7 @@ class Strings {
   static const privacyPolicyUrl =
       'https://ionian-earthworm-71d.notion.site/67d9545c307748fc8e0bdd67ed852900?pvs=4';
   static const contactUrl = 'https://forms.gle/zbWgULaGxh46jfyF7';
+  static const dataDeleteUrl = 'https://forms.gle/dYTWtYj41QjtfPYD9';
 
   static String appVersion(String version) => 'ver $version';
 

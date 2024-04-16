@@ -77,6 +77,16 @@ class SettingPage extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24),
+            child: TextButton(
+              onPressed: () => _launchUrl(Strings.dataDeleteUrl),
+              child: const Text(
+                'データ削除',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ),
         ],
       ),
     );

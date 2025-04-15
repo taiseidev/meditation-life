@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:meditation_life/core/extension/int_extension.dart';
 import 'package:meditation_life/core/extension/void_callback_ext.dart';
 import 'package:meditation_life/core/res/color.dart';
 import 'package:meditation_life/core/utils/ad_mob_util.dart';
@@ -36,97 +37,159 @@ class _MeditationDetailViewState extends State<MeditationDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.background,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        title: Text(
-          widget.meditation.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.black,
+        title: const Text(''),
+        automaticallyImplyLeading: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Hero(
-                  tag: widget.meditation.id,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.meditation.thumbnailUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                InkWell(
-                  onTap: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await Future<void>.delayed(const Duration(seconds: 1));
-                    await adInterstitial.show();
-                    setState(() {
-                      isLoading = false;
-                    });
-                    if (context.mounted) {
-                      await Navigator.push<void>(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (context) =>
-                              MeditationPlayScreen(widget.meditation),
-                        ),
-                      );
-                    }
-                  }.withFeedback(),
-                  child: Container(
+          // Full-screen background image with gradient overlay
+          Positioned.fill(
+            child: Hero(
+              tag: widget.meditation.id,
+              child: Stack(
+                children: [
+                  // Image
+                  CachedNetworkImage(
+                    imageUrl: widget.meditation.thumbnailUrl,
+                    fit: BoxFit.cover,
                     width: double.infinity,
-                    height: 50,
-                    alignment: Alignment.center,
+                    height: double.infinity,
+                  ),
+                  // Gradient overlay
+                  Container(
                     decoration: BoxDecoration(
-                      color: AppColor.secondary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Text(
-                      Strings.meditationStartButtonLabel,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColor.primary.withOpacity(0.3),
+                          AppColor.primary.withOpacity(0.7),
+                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+
+          // Content
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Spacer(),
+                  // Title
+                  Text(
+                    widget.meditation.title,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Duration
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColor.secondary.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.access_time,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              widget.meditation.duration.formatTime(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  // Start button
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await Future<void>.delayed(const Duration(seconds: 1));
+                      await adInterstitial.show();
+                      setState(() {
+                        isLoading = false;
+                      });
+                      if (context.mounted) {
+                        await Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) =>
+                                MeditationPlayScreen(widget.meditation),
+                          ),
+                        );
+                      }
+                    }.withFeedback(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.secondary,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(double.infinity, 56),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 4,
+                      shadowColor: AppColor.secondary.withOpacity(0.5),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.play_circle_outline, size: 24),
+                        const SizedBox(width: 8),
+                        Text(
+                          Strings.meditationStartButtonLabel,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+
+          // Loading overlay
           if (isLoading)
-            Stack(
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.grey.withOpacity(0.2),
-                  ),
+            Container(
+              color: AppColor.primary.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: AppColor.secondary,
                 ),
-                const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColor.secondary,
-                  ),
-                ),
-              ],
+              ),
             ),
         ],
       ),

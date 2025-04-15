@@ -56,59 +56,119 @@ class MeditationCompletedModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: AppColor.secondary,
-      surfaceTintColor: Colors.transparent,
-      title: const Text(
-        '今日もお疲れ様でした！',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColor.secondary,
+              AppColor.secondary.withOpacity(0.8),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.primary.withOpacity(0.3),
+              blurRadius: 20,
+              spreadRadius: 2,
+            ),
+          ],
         ),
-      ),
-      content: Text(
-        outputRandomMessage(),
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      actions: <Widget>[
-        Consumer(
-          builder: (context, ref, child) {
-            return TextButton(
-              onPressed: () async {
-                // 瞑想履歴のProviderをリフレッシュ
-                ref.invalidate(meditationHistoryNotifierProvider);
-                // 瞑想履歴をFirestoreに保存
-                await ref
-                    .read(meditationHistoryUsecaseProvider)
-                    .addMeditationHistory(
-                      meditationId,
-                      DateTime.now(),
-                    );
-                if (context.mounted) {
-                  // 音源再生画面を全て閉じてタブを切り替え
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                  ref
-                      .read(selectedTabIndexProvider.notifier)
-                      .switchTab(index: 0);
-                }
-              }.withFeedback(),
-              child: const Text(
-                '閉じる',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Celebration icon
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
               ),
-            );
-          },
+              child: const Icon(
+                Icons.celebration,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Title
+            const Text(
+              '今日もお疲れ様でした！',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+
+            // Message
+            Text(
+              outputRandomMessage(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+
+            // Button
+            Consumer(
+              builder: (context, ref, child) {
+                return ElevatedButton(
+                  onPressed: () async {
+                    // 瞑想履歴のProviderをリフレッシュ
+                    ref.invalidate(meditationHistoryNotifierProvider);
+                    // 瞑想履歴をFirestoreに保存
+                    await ref
+                        .read(meditationHistoryUsecaseProvider)
+                        .addMeditationHistory(
+                          meditationId,
+                          DateTime.now(),
+                        );
+                    if (context.mounted) {
+                      // 音源再生画面を全て閉じてタブを切り替え
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      ref
+                          .read(selectedTabIndexProvider.notifier)
+                          .switchTab(index: 0);
+                    }
+                  }.withFeedback(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColor.secondary,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    '完了',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

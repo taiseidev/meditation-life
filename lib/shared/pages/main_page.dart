@@ -53,17 +53,46 @@ class MainPage extends HookConsumerWidget {
 
   /// フローティングアクションボタンを構築
   Widget _buildFloatingActionButton(WidgetRef ref) {
-    return FloatingActionButton(
-      onPressed: () {
-        ref
-            .read(selectedTabIndexProvider.notifier)
-            .switchTab(index: meditationPageIndex);
-      }.withFeedback(),
-      backgroundColor: AppColor.secondary.withOpacity(0.6),
-      shape: const CircleBorder(),
-      child: const Icon(
-        Icons.play_arrow_outlined,
-        color: Colors.white,
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.secondary.withOpacity(0.3),
+            blurRadius: 10,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: FloatingActionButton(
+        onPressed: () {
+          ref
+              .read(selectedTabIndexProvider.notifier)
+              .switchTab(index: meditationPageIndex);
+        }.withFeedback(),
+        backgroundColor: AppColor.secondary,
+        elevation: 4,
+        shape: const CircleBorder(),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColor.secondary,
+                AppColor.secondary.withOpacity(0.8),
+              ],
+            ),
+          ),
+          child: const Icon(
+            Icons.self_improvement,
+            color: Colors.white,
+            size: 28,
+          ),
+        ),
       ),
     );
   }
@@ -71,15 +100,26 @@ class MainPage extends HookConsumerWidget {
   /// ボトムナビゲーションバーを構築
   Widget _buildBottomNavigationBar(WidgetRef ref, int activeIndex) {
     return AnimatedBottomNavigationBar(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColor.primary,
       activeColor: Colors.white,
       inactiveColor: Colors.white.withOpacity(0.6),
-      icons: const [Icons.home_outlined, Icons.settings_outlined],
+      icons: const [
+        Icons.history_outlined,
+        Icons.settings_outlined,
+      ],
+      iconSize: 24,
       activeIndex: activeIndex,
       gapLocation: GapLocation.center,
-      notchSmoothness: NotchSmoothness.softEdge,
-      leftCornerRadius: 32,
-      rightCornerRadius: 32,
+      notchSmoothness: NotchSmoothness.verySmoothEdge,
+      leftCornerRadius: 24,
+      rightCornerRadius: 24,
+      elevation: 8,
+      shadow: BoxShadow(
+        color: AppColor.primary.withOpacity(0.3),
+        blurRadius: 10,
+        spreadRadius: 0,
+        offset: const Offset(0, -5),
+      ),
       onTap: (int index) {
         ref.read(selectedTabIndexProvider.notifier).switchTab(index: index);
       }.withFeedback(),

@@ -29,6 +29,7 @@ class Strings {
   static const dataDeleteUrl = 'https://forms.gle/dYTWtYj41QjtfPYD9';
 
   static String appVersion(String version) => 'ver $version';
+  static String accountId(String id) => 'ID: $id';
 
   // sound_setting_page
   static const volumeLabel = '音量';

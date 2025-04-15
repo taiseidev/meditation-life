@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meditation_life/core/extension/void_callback_ext.dart';
 import 'package:meditation_life/core/utils/package_info_util.dart';
@@ -23,6 +25,21 @@ class SettingPage extends StatelessWidget {
       appBar: const CommonAppBar(title: Strings.settingPageTitle),
       body: Column(
         children: [
+          _SettingsTile(
+            title:
+                Strings.accountId(FirebaseAuth.instance.currentUser?.uid ?? ''),
+            subTitle: 'アカウント削除時に必要になります。',
+            iconData: Icons.copy,
+            callback: () {
+              final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+              Clipboard.setData(ClipboardData(text: uid));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$uidをコピーしました'),
+                ),
+              );
+            },
+          ),
           _SettingsTile(
             title: Strings.notificationSettingLabel,
             callback: () => Navigator.push(
@@ -82,7 +99,7 @@ class SettingPage extends StatelessWidget {
             child: TextButton(
               onPressed: () => _launchUrl(Strings.dataDeleteUrl),
               child: const Text(
-                'データ削除',
+                'アカウント削除',
                 style: TextStyle(color: Colors.red),
               ),
             ),
@@ -96,10 +113,14 @@ class SettingPage extends StatelessWidget {
 class _SettingsTile extends ConsumerWidget {
   const _SettingsTile({
     required this.title,
+    this.subTitle,
+    this.iconData = Icons.chevron_right,
     required this.callback,
   });
 
   final String title;
+  final String? subTitle;
+  final IconData iconData;
   final VoidCallback callback;
 
   @override
@@ -124,9 +145,17 @@ class _SettingsTile extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        trailing: const Icon(
-          Icons.chevron_right,
-        ),
+        subtitle: subTitle != null
+            ? Text(
+                subTitle!,
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : const SizedBox.shrink(),
+        trailing: Icon(iconData),
         onTap: callback.withFeedback(),
       ),
     );

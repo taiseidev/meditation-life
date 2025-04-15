@@ -52,9 +52,21 @@ class MeditationHistoryPage extends HookConsumerWidget {
                 child: _Banner(),
               ),
               SliverToBoxAdapter(
-                child: Padding(
-                  padding:
+                child: Container(
+                  margin:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
                   child: _MonthlyMeditationSummary(
                     month: pageMonth.value.month.toString(),
                     monthlyMeditationCount: value.events.length.toString(),

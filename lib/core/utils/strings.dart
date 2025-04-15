@@ -5,6 +5,8 @@ class Strings {
   static const appTitle = '瞑想ライフ';
   static const updateLabel = '変更';
   static const closeLabel = '閉じる';
+  static const comingSoon = 'Coming Soon...';
+  static const urlLaunchError = 'URLを開けませんでした';
 
   // meditation_history_page
   static const meditationHistoryTitle = '瞑想履歴';
@@ -20,6 +22,9 @@ class Strings {
   static const termsOfServiceLabel = '利用規約';
   static const privacyPolicyLabel = 'プライバシーポリシー';
   static const contactLabel = 'お問い合わせ';
+  static const removeAdsLabel = '広告非表示';
+  static const deleteAccountLabel = 'アカウント削除';
+  static const accountIdDescription = 'アカウント削除時に必要になります。';
 
   static const termsOfServiceUrl =
       'https://ionian-earthworm-71d.notion.site/4b44e3fb3e5a4133875b18cab6e75e07?pvs=4';
@@ -30,6 +35,7 @@ class Strings {
 
   static String appVersion(String version) => 'ver $version';
   static String accountId(String id) => 'ID: $id';
+  static String copiedToClipboard(String text) => '$textをコピーしました';
 
   // sound_setting_page
   static const volumeLabel = '音量';

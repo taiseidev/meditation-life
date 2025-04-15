@@ -11,18 +11,27 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'main_page.g.dart';
 
+/// タブインデックスを管理するプロバイダー
 @riverpod
 class SelectedTabIndex extends _$SelectedTabIndex {
   @override
   int build() => 0;
+
+  /// タブを切り替える
   void switchTab({required int index}) => state = index;
 }
 
+/// メインページ
 class MainPage extends HookConsumerWidget {
   MainPage({super.key});
 
+  // タブインデックスの定数
+  static const historyPageIndex = 0;
+  static const settingPageIndex = 1;
   static const meditationPageIndex = 2;
-  final pages = <Widget>[
+
+  // 各タブに対応するページ
+  final List<Widget> _pages = <Widget>[
     MeditationHistoryPage(),
     const SettingPage(),
     const MeditationPage(),
@@ -30,38 +39,50 @@ class MainPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTabIndex = ref.watch(selectedTabIndexProvider);
+
     return Scaffold(
       body: BackgroundImageWrapper(
-        child: pages[ref.watch(selectedTabIndexProvider)],
+        child: _pages[selectedTabIndex],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          ref
-              .read(selectedTabIndexProvider.notifier)
-              .switchTab(index: meditationPageIndex);
-        }.withFeedback(),
-        backgroundColor: AppColor.secondary.withOpacity(0.6),
-        shape: const CircleBorder(),
-        child: const Icon(
-          Icons.play_arrow_outlined,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: _buildFloatingActionButton(ref),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        backgroundColor: Colors.black,
-        activeColor: Colors.white,
-        inactiveColor: Colors.white.withOpacity(0.6),
-        icons: const [Icons.home_outlined, Icons.settings_outlined],
-        activeIndex: ref.watch(selectedTabIndexProvider),
-        gapLocation: GapLocation.center,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 32,
-        rightCornerRadius: 32,
-        onTap: (int index) async {
-          ref.read(selectedTabIndexProvider.notifier).switchTab(index: index);
-        }.withFeedback(),
+      bottomNavigationBar: _buildBottomNavigationBar(ref, selectedTabIndex),
+    );
+  }
+
+  /// フローティングアクションボタンを構築
+  Widget _buildFloatingActionButton(WidgetRef ref) {
+    return FloatingActionButton(
+      onPressed: () {
+        ref
+            .read(selectedTabIndexProvider.notifier)
+            .switchTab(index: meditationPageIndex);
+      }.withFeedback(),
+      backgroundColor: AppColor.secondary.withOpacity(0.6),
+      shape: const CircleBorder(),
+      child: const Icon(
+        Icons.play_arrow_outlined,
+        color: Colors.white,
       ),
+    );
+  }
+
+  /// ボトムナビゲーションバーを構築
+  Widget _buildBottomNavigationBar(WidgetRef ref, int activeIndex) {
+    return AnimatedBottomNavigationBar(
+      backgroundColor: Colors.black,
+      activeColor: Colors.white,
+      inactiveColor: Colors.white.withOpacity(0.6),
+      icons: const [Icons.home_outlined, Icons.settings_outlined],
+      activeIndex: activeIndex,
+      gapLocation: GapLocation.center,
+      notchSmoothness: NotchSmoothness.softEdge,
+      leftCornerRadius: 32,
+      rightCornerRadius: 32,
+      onTap: (int index) {
+        ref.read(selectedTabIndexProvider.notifier).switchTab(index: index);
+      }.withFeedback(),
     );
   }
 }

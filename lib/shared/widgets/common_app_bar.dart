@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-// ignore: avoid_implementing_value_types
-class CommonAppBar extends StatelessWidget implements PreferredSize {
+/// アプリ全体で共通して使用するアプリバー
+class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CommonAppBar({
     super.key,
     required this.title,
@@ -24,11 +24,5 @@ class CommonAppBar extends StatelessWidget implements PreferredSize {
   }
 
   @override
-  Widget get child => const SizedBox.shrink();
-
-  @override
-  Size get preferredSize => const Size(
-        double.infinity,
-        kToolbarHeight,
-      );
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

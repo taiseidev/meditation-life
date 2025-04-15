@@ -17,6 +17,7 @@ import 'package:meditation_life/features/meditation_history/domain/repository/me
 import 'package:meditation_life/features/meditation_history/infrastructure/repository/firebase_meditation_history_repository.dart';
 import 'package:timezone/data/latest.dart' as timezone;
 
+// このプロバイダーは本来、専用のプロバイダーファイルに移動すべきです
 final meditationHistoryRepositoryProvider =
     Provider<MeditationHistoryRepository>(
   (_) => throw UnimplementedError(),
@@ -25,39 +26,45 @@ final meditationHistoryRepositoryProvider =
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // timezoneパッケージの初期化処理
+  // 基本的な初期化処理
   timezone.initializeTimeZones();
 
-  await Future.wait([
-    // Firebaseの初期化処理
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    // intlパッケージのDateFormatを初期化
-    initializeDateFormatting(),
-    // AdMobの初期化
-    MobileAds.instance.initialize(),
-    // PackageInfoの初期化処理
-    PackageInfoInstance.init(),
-    // timezoneの初期化処理
-    LocalTimeZoneUtil.init(),
-    // SharedPreferenceの初期化
-    SharedPreferencesInstance.init(),
-    // お知らせの初期化
-    LocalNotification().localNotificationSetting(),
-  ]);
+  // 並列で実行可能な初期化処理をまとめて実行
+  await _initializeAppDependencies();
 
+  // アプリケーションの起動
   runApp(
     ProviderScope(
-      overrides: [
-        meditationRepositoryProvider.overrideWith(
-          (_) => FirebaseMeditationRepository(FirebaseFirestore.instance),
-        ),
-        meditationHistoryRepositoryProvider.overrideWith(
-          (_) =>
-              FirebaseMeditationHistoryRepository(FirebaseFirestore.instance),
-        ),
-      ],
+      overrides: _createProviderOverrides(),
       observers: [RiverpodLogger()],
       child: App(),
     ),
   );
+}
+
+/// アプリケーションの依存関係を初期化する
+Future<void> _initializeAppDependencies() async {
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    initializeDateFormatting(),
+    MobileAds.instance.initialize(),
+    PackageInfoInstance.init(),
+    LocalTimeZoneUtil.init(),
+    SharedPreferencesInstance.init(),
+    LocalNotification().localNotificationSetting(),
+  ]);
+}
+
+/// Riverpodプロバイダーのオーバーライドを作成する
+List<Override> _createProviderOverrides() {
+  final firestore = FirebaseFirestore.instance;
+
+  return [
+    meditationRepositoryProvider.overrideWith(
+      (_) => FirebaseMeditationRepository(firestore),
+    ),
+    meditationHistoryRepositoryProvider.overrideWith(
+      (_) => FirebaseMeditationHistoryRepository(firestore),
+    ),
+  ];
 }
